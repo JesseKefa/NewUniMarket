@@ -1,7 +1,16 @@
+.background {
+    background-image: url('public/background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add any additional styling you need */
+  }
+
 .landing-page {
     text-align: center;
-    background: url('/path/to/your/background/image.jpg') no-repeat center center fixed;
-    background-size: cover;
     color: white;
   }
   
