@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
-const authController = require('../controllers/authController');
+const { register, login, verifyEmail, forgotPassword, resetPassword } = require('../controllers/authController');
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.get('/verify-email', authController.verifyEmail);
-router.post('/forgot-password', authController.forgotPassword);
-router.post('/reset-password', authController.resetPassword);
-router.post('/two-factor-auth', authController.twoFactorAuth);
+const router = express.Router();
+
+router.post('/register', register);
+router.post('/login', login);
+router.get('/verify-email', verifyEmail);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;

@@ -5,19 +5,26 @@ import './LandingPage.css';
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      <header className="landing-header">
-        <h1>Landing Page</h1>
-        <p>Creative Design</p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-        <div className="landing-buttons">
-          <Link to="/signup">Sign Up</Link>
-          <Link to="/login">Login</Link>
-        </div>
+      <header>
+        <nav>
+          <div className="logo">UniMarket</div>
+          <ul>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/register">Sign Up</Link></li>
+          </ul>
+        </nav>
       </header>
+      <main>
+        <h1>Welcome to UniMarket</h1>
+        <p>Your one-stop shop for all your needs.</p>
+        <div className="buttons">
+          <Link to="/login" className="btn">Login</Link>
+          <Link to="/register" className="btn">Sign Up</Link>
+        </div>
+      </main>
     </div>
   );
 };
 
 export default LandingPage;
+

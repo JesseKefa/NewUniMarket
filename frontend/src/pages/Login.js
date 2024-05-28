@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../utils/axiosConfig';
+import axios from 'axios';
 import './Login.css';
 
 const Login = () => {
@@ -10,36 +10,30 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/auth/login', { email, password });
+      const response = await axios.post('/api/auth/login', { email, password });
       setMessage('Login successful!');
+      // Redirect to dashboard or home page after successful login
     } catch (error) {
-      setMessage(`Login failed: ${error.response.data.error}`);
+      setMessage('Login failed: ' + (error.response?.data?.error || 'An unexpected error occurred'));
     }
   };
 
   return (
-    <div className="login-page">
-      <h2>Login</h2>
+    <div className="auth-container">
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <h2>Login</h2>
+        <label>Email address</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        
+        <label>Password</label>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        
         <button type="submit">Login</button>
+        {message && <p>{message}</p>}
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };
 
 export default Login;
+

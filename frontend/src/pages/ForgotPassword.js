@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../utils/axiosConfig';
+import axios from 'axios';
 import './ForgotPassword.css';
 
 const ForgotPassword = () => {
@@ -9,27 +9,23 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/auth/forgot-password', { email });
-      setMessage('Password reset link sent to your email');
+      const response = await axios.post('/api/auth/forgot-password', { email });
+      setMessage('Password reset link sent to your email.');
     } catch (error) {
-      setMessage(`Error: ${error.response.data.error}`);
+      setMessage('Error: ' + (error.response?.data?.error || 'An unexpected error occurred'));
     }
   };
 
   return (
-    <div className="forgot-password-page">
-      <h2>Forgot Password</h2>
+    <div className="auth-container">
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <h2>Forgot Password</h2>
+        <label>Email address</label>
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        
         <button type="submit">Send Reset Link</button>
+        {message && <p>{message}</p>}
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };
