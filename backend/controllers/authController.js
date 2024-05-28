@@ -2,6 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+require('dotenv').config();  // Ensure environment variables are loaded
 
 // Setup email transporter
 const transporter = nodemailer.createTransport({
@@ -78,7 +79,7 @@ exports.verifyEmail = async (req, res) => {
     user.verified = true;
     await user.save();
 
-    res.redirect('/email-verified');
+    res.redirect('/email-verified');  // Ensure the frontend handles this route
   } catch (error) {
     console.error('Error verifying email:', error);
     res.status(500).json({ error: 'Error verifying email' });
@@ -139,3 +140,4 @@ exports.twoFactorAuth = async (req, res) => {
     res.status(500).json({ error: 'Error during 2FA' });
   }
 };
+
