@@ -1,0 +1,27 @@
+.landing-page {
+    text-align: center;
+    background: url('/path/to/your/background/image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+  }
+  
+  .landing-header {
+    padding: 4rem 1rem;
+  }
+  
+  .landing-buttons a {
+    display: inline-block;
+    margin: 1rem;
+    padding: 1rem 2rem;
+    color: white;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  
+  .landing-buttons a:hover {
+    background-color: #21a1f1;
+  }
+  
