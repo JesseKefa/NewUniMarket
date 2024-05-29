@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
-import axios from '../utils/axiosConfig';
-import './SignUp.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './Register.css';
 
-const SignUp = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/auth/register', {
-        email,
-        password,
-        name,
-        phone,
-        dateOfBirth,
-      });
-      setMessage('Registration successful! Please check your email for verification.');
+      const response = await axios.post('http://localhost:3000/api/auth/register', { email, password, name, phone, dateOfBirth });
+      setMessage(response.data.message);
+      navigate('/verify-email');
     } catch (error) {
-      setMessage(`Registration failed: ${error.response.data.error}`);
+      setMessage(error.response.data.error || 'Registration failed: An unexpected error occurred');
     }
   };
 
   return (
-    <div className="signup-page">
+    <div className="register-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRegister}>
         <input
           type="email"
+          name="email"
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -39,6 +37,7 @@ const SignUp = () => {
         />
         <input
           type="password"
+          name="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -46,6 +45,7 @@ const SignUp = () => {
         />
         <input
           type="text"
+          name="name"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -53,6 +53,7 @@ const SignUp = () => {
         />
         <input
           type="text"
+          name="phone"
           placeholder="Phone"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
@@ -60,7 +61,7 @@ const SignUp = () => {
         />
         <input
           type="date"
-          placeholder="Date of Birth"
+          name="dateOfBirth"
           value={dateOfBirth}
           onChange={(e) => setDateOfBirth(e.target.value)}
           required
@@ -72,4 +73,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

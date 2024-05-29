@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 exports.register = async (req, res) => {
   const { email, password, name, phone, dateOfBirth } = req.body;
-  console.log("Received registration data:", req.body);  // Log received data
+  console.log("Received registration data:", req.body);
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ email, password: hashedPassword, name, phone, dateOfBirth, verified: false });
@@ -29,14 +29,12 @@ exports.register = async (req, res) => {
       html: `<a href="${url}">Click here to verify your email</a>`,
     });
 
-    res.status(201).json({ message: 'User registered. Please check your email for verification.' });
+    res.status(201).json({ message: 'User registered. Please check your email to verify your account.' });
   } catch (error) {
-    console.error("Error during registration:", error);  // Log the error
+    console.error("Error during registration:", error);
     if (error.code === 11000) {
-      // Duplicate key error
       res.status(400).json({ error: 'Email already registered' });
     } else if (error.message.includes('Missing credentials for "PLAIN"')) {
-      // Email credential error
       res.status(500).json({ error: 'Email service credentials are incorrect' });
     } else {
       res.status(500).json({ error: 'Error registering user' });
@@ -61,25 +59,15 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Please verify your email before signing in' });
     }
 
-    // Generate 2FA code and send it
-    const twoFactorCode = Math.floor(100000 + Math.random() * 900000).toString();
-    user.twoFactorCode = twoFactorCode;
-    await user.save();
-
-    await transporter.sendMail({
-      to: email,
-      subject: 'Your 2FA code',
-      text: `Your 2FA code is ${twoFactorCode}`,
-    });
-
-    res.json({ message: '2FA code sent to your email' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token, message: 'Signed in successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error signing in' });
   }
 };
 
 exports.verifyEmail = async (req, res) => {
-  const { token } = req.query; // Get the token from URL query params
+  const { token } = req.query;
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(userId);
@@ -90,9 +78,9 @@ exports.verifyEmail = async (req, res) => {
     user.verified = true;
     await user.save();
 
-    res.redirect('/email-verified'); // Redirect to a frontend page after successful verification
+    res.redirect('/login');
   } catch (error) {
-    console.error('Error verifying email:', error); // Log the error
+    console.error('Error verifying email:', error);
     res.status(500).json({ error: 'Error verifying email' });
   }
 };
@@ -105,7 +93,6 @@ exports.forgotPassword = async (req, res) => {
       return res.status(400).json({ error: 'Email not found' });
     }
 
-    // Generate reset token and send email
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const url = `http://localhost:3000/reset-password?token=${token}`;
     await transporter.sendMail({
@@ -129,11 +116,10 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ error: 'Invalid token' });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
+    user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
 
-    res.json({ message: 'Password reset successful' });
+    res.json({ message: 'Password reset successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error resetting password' });
   }
