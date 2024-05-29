@@ -1,47 +1,46 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
-  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const { token } = useParams();
+  const navigate = useNavigate();
 
-  const onEmailSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/reset-password', { email });
-      console.log(res.data);
-      setIsEmailSent(true);
-    } catch (err) {
-      console.error(err.response.data);
-    }
-  };
+  const onChange = (e) => setPassword(e.target.value);
 
-  const onPasswordSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, { password });
-      console.log(res.data);
+      setMessage(res.data.message);
+      setMessageType('success');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      console.error(err.response.data);
+      setMessage(err.response.data.message);
+      setMessageType('error');
     }
   };
 
   return (
     <div>
-      {!isEmailSent ? (
-        <form onSubmit={onEmailSubmit}>
-          <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-          <button type="submit">Send Reset Link</button>
-        </form>
-      ) : (
-        <form onSubmit={onPasswordSubmit}>
-          <input type="text" name="token" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Enter Token" required />
-          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New Password" required />
-          <button type="submit">Reset Password</button>
-        </form>
-      )}
+      <h1>Reset Password</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={onChange}
+          placeholder="New Password"
+          required
+        />
+        <button type="submit">Reset Password</button>
+      </form>
+      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

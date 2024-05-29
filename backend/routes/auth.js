@@ -3,15 +3,23 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
-const speakeasy = require('speakeasy');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
   const { email, password, phoneNumber, username, dob } = req.body;
 
+  console.log('Register request received:', req.body);
+
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({ message: 'Password must be at least 8 characters long, contain one uppercase letter and one number.' });
+  }
+
   try {
     let user = await User.findOne({ email });
     if (user) {
+      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -20,39 +28,38 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    const otp = speakeasy.totp({ secret: process.env.OTP_SECRET, encoding: 'base32' });
-    user.otp = otp;
+    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
 
     await user.save();
 
-    sendEmail(email, 'Verify your email', `Your OTP code is ${otp}`);
+    sendEmail(email, 'Verify your email', `Please verify your email by clicking the link: ${resetLink}`);
+    console.log('Verification email sent to:', email);
 
-    res.status(200).json({ message: 'Registration successful, please check your email for the OTP' });
+    res.status(200).json({ message: 'Registration successful. Please check your email for the verification link.' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
 
-router.post('/verify-email', async (req, res) => {
-  const { email, otp } = req.body;
+router.post('/reset-password/:token', async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findById(decoded.userId);
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid token' });
     }
 
-    if (user.otp !== otp) {
-      return res.status(400).json({ message: 'Invalid OTP' });
-    }
-
-    user.isVerified = true;
-    user.otp = null;
-
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.isVerified = true; 
     await user.save();
 
-    res.status(200).json({ message: 'Email verified successfully' });
+    res.status(200).json({ message: 'Password reset successfully. You can now log in with your new password.' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -73,51 +80,17 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    if (!user.isVerified) {
-      return res.status(400).json({ message: 'Please verify your email first' });
-    }
-
-    const otp = speakeasy.totp({ secret: process.env.OTP_SECRET, encoding: 'base32' });
-    user.otp = otp;
-
-    await user.save();
-
-    sendEmail(email, 'Your OTP code', `Your OTP code is ${otp}`);
-
-    res.status(200).json({ message: 'OTP sent to your email' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-router.post('/verify-otp', async (req, res) => {
-  const { email, otp } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    if (user.otp !== otp) {
-      return res.status(400).json({ message: 'Invalid OTP' });
-    }
-
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        username: user.username // Add username to payload
       }
     };
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, username: user.username }); // Return token and username
     });
-
-    user.otp = null;
-
-    await user.save();
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

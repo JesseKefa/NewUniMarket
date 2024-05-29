@@ -5,8 +5,6 @@ const LandingPage = () => {
   return (
     <div>
       <h1>Welcome to UniMarket</h1>
-      <Link to="/register">Register</Link>
-      <Link to="/login">Login</Link>
     </div>
   );
 };

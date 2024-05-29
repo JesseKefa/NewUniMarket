@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Register = () => {
@@ -10,6 +11,8 @@ const Register = () => {
     dob: ''
   });
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const navigate = useNavigate();
 
   const { email, password, phoneNumber, username, dob } = formData;
 
@@ -20,8 +23,10 @@ const Register = () => {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
       setMessage(res.data.message);
+      setMessageType('success');
     } catch (err) {
       setMessage(err.response.data.message);
+      setMessageType('error');
     }
   };
 
@@ -71,7 +76,7 @@ const Register = () => {
         />
         <button type="submit">Register</button>
       </form>
-      {message && <p className={message.includes('successful') ? 'success-message' : 'error-message'}>{message}</p>}
+      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

@@ -3,11 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
 import ResetPassword from './components/ResetPassword';
-import VerifyEmail from './components/VerifyEmail';
 import VerifyOTP from './components/VerifyOTP';
-import Dashboard from './components/Dashboard';
 import LandingPage from './components/LandingPage';
-import './styles.css'; // Import the CSS file
+import Welcome from './components/Welcome';
+import './styles.css';
 
 function App() {
   return (
@@ -24,10 +23,9 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/welcome" element={<Welcome />} />
         </Routes>
       </div>
     </Router>
