@@ -1,42 +1,47 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import './ResetPassword.css';
 
 const ResetPassword = () => {
-  const [newPassword, setNewPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const { token } = useParams();
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
-  const handleResetPassword = async (e) => {
+  const onEmailSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:3000/api/auth/reset-password`, { token, newPassword });
-      setMessage(response.data.message);
-      if (response.data.message === 'Password reset successfully') {
-        navigate('/login');
-      }
-    } catch (error) {
-      setMessage('An error occurred. Please try again.');
+      const res = await axios.post('http://localhost:5000/api/auth/reset-password', { email });
+      console.log(res.data);
+      setIsEmailSent(true);
+    } catch (err) {
+      console.error(err.response.data);
+    }
+  };
+
+  const onPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, { password });
+      console.log(res.data);
+    } catch (err) {
+      console.error(err.response.data);
     }
   };
 
   return (
-    <div className="reset-password-container">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleResetPassword}>
-        <input
-          type="password"
-          name="newPassword"
-          placeholder="New password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div>
+      {!isEmailSent ? (
+        <form onSubmit={onEmailSubmit}>
+          <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+          <button type="submit">Send Reset Link</button>
+        </form>
+      ) : (
+        <form onSubmit={onPasswordSubmit}>
+          <input type="text" name="token" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Enter Token" required />
+          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="New Password" required />
+          <button type="submit">Reset Password</button>
+        </form>
+      )}
     </div>
   );
 };

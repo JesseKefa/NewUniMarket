@@ -1,74 +1,77 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './Register.css';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    phoneNumber: '',
+    username: '',
+    dob: ''
+  });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
+  const { email, password, phoneNumber, username, dob } = formData;
+
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/register', { email, password, name, phone, dateOfBirth });
-      setMessage(response.data.message);
-      navigate('/verify-email');
-    } catch (error) {
-      setMessage(error.response.data.error || 'Registration failed: An unexpected error occurred');
+      const res = await axios.post('http://localhost:5000/api/auth/register', formData);
+      setMessage(res.data.message);
+    } catch (err) {
+      setMessage(err.response.data.message);
     }
   };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
+    <div>
+      <h1>Register</h1>
+      <form onSubmit={onSubmit}>
         <input
           type="email"
           name="email"
-          placeholder="Email address"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={onChange}
+          placeholder="Email"
           required
         />
         <input
           type="password"
           name="password"
-          placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={onChange}
+          placeholder="Password"
           required
         />
         <input
           type="text"
-          name="name"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={onChange}
+          placeholder="Phone Number"
           required
         />
         <input
           type="text"
-          name="phone"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          name="username"
+          value={username}
+          onChange={onChange}
+          placeholder="Username"
           required
         />
         <input
           type="date"
-          name="dateOfBirth"
-          value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
+          name="dob"
+          value={dob}
+          onChange={onChange}
+          placeholder="Date of Birth"
           required
         />
         <button type="submit">Register</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={message.includes('successful') ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

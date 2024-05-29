@@ -1,41 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
-import './VerifyEmail.css';
 
 const VerifyEmail = () => {
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
-
-    const verify = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/auth/verify-email?token=${token}`);
-        setMessage('Email verification successful. You can now log in.');
-        navigate('/login');
-      } catch (error) {
-        setMessage('Email verification failed: An unexpected error occurred');
-      }
-    };
-
-    if (token) {
-      verify();
-    } else {
-      setMessage('Invalid verification link.');
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/verify-email', { email, otp });
+      setMessage(res.data.message);
+    } catch (err) {
+      setMessage(err.response.data.message);
     }
-  }, [location, navigate]);
+  };
 
   return (
-    <div className="verify-email-container">
-      <h2>Email Verification</h2>
-      <p>{message}</p>
+    <div>
+      <h1>Verify Email</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="text"
+          name="otp"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+          placeholder="OTP"
+          required
+        />
+        <button type="submit">Verify Email</button>
+      </form>
+      {message && <p className={message.includes('successfully') ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };
 
 export default VerifyEmail;
-

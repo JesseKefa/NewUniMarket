@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = () => {
+const VerifyOTP = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await axios.post('http://localhost:5000/api/auth/verify-otp', { email, otp });
       setMessage(res.data.message);
     } catch (err) {
       setMessage(err.response.data.message);
@@ -18,7 +18,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Verify OTP</h1>
       <form onSubmit={onSubmit}>
         <input
           type="email"
@@ -29,18 +29,18 @@ const Login = () => {
           required
         />
         <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          type="text"
+          name="otp"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+          placeholder="OTP"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Verify OTP</button>
       </form>
-      {message && <p className={message.includes('OTP') ? 'success-message' : 'error-message'}>{message}</p>}
+      {message && <p className={message.includes('successful') ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };
 
-export default Login;
+export default VerifyOTP;
