@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .landing-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .landing-header,
+  .intro-section,
+  .features-section,
+  .categories-section,
+  .landing-footer {
+    width: 100vw;
+    min-height: 100vh;
+    padding: 100px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .landing-header {
+    background-color: #f4f4f4;
+  }
+  
+  .landing-header h1 {
+    font-size: 4em;
+    margin-bottom: 20px;
+  }
+  
+  .landing-header p {
+    font-size: 1.5em;
+    color: #555;
+  }
+  
+  .intro-section {
+    background-color: #fff8e1;
+  }
+  
+  .intro-section h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+  }
+  
+  .intro-section p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  
+  .intro-section a {
+    font-size: 1em;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .intro-section a:hover {
+    text-decoration: underline;
+  }
+  
+  .features-section {
+    background-color: #fafafa;
+  }
+  
+  .features-section .feature {
+    text-align: center;
+    width: 30%;
+  }
+  
+  .features-section .feature h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .features-section .feature p {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  .categories-section {
+    background-color: #fff;
+  }
+  
+  .categories-section h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+  }
+  
+  .categories {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .categories .category {
+    width: 18%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .categories .category img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .categories .category p {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .landing-footer {
+    background-color: #f4f4f4;
+  }
+  
+  .landing-footer p {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  .landing-footer a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .landing-footer a:hover {
+    text-decoration: underline;
+  }
+  
