@@ -55,6 +55,11 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
       {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+
+      <div className="forgot-password">
+        <a href="/forgot-password">Forgot Password?</a>
+      </div>
+
     </div>
   );
 };

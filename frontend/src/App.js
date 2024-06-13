@@ -6,6 +6,7 @@ import ResetPassword from './components/ResetPassword';
 import VerifyOTP from './components/VerifyOTP';
 import LandingPage from './components/LandingPage';
 import Welcome from './components/Welcome';
+import ForgotPassword from './components/ForgotPassword';
 import './styles.css';
 
 function App() {
