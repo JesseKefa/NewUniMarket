@@ -7,18 +7,15 @@ import VerifyOTP from './components/VerifyOTP';
 import LandingPage from './components/LandingPage';
 import Welcome from './components/Welcome';
 import ForgotPassword from './components/ForgotPassword';
+import PrivateRoute from './components/PrivateRoute';
+import AccountSettings from './components/AccountSettings';
+import Navbar from './components/Navbar';
 import './styles.css';
 
 function App() {
   return (
     <Router>
-      <nav>
-        <a href="/">UniMarket</a>
-        <div>
-          <a href="/register">Register</a>
-          <a href="/login">Login</a>
-        </div>
-      </nav>
+      <Navbar />
       <div className="container">
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -26,7 +23,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
-          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* Protected Routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/welcome" element={<Welcome />} />
+            {/* Add your additional protected routes here */}
+          </Route>
         </Routes>
       </div>
     </Router>
@@ -34,3 +37,4 @@ function App() {
 }
 
 export default App;
+
