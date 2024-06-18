@@ -11,6 +11,8 @@ import PrivateRoute from './components/PrivateRoute';
 import AccountSettings from './components/AccountSettings';
 import Navbar from './components/Navbar';
 import './styles.css';
+import './components/Navbar.css'; // Add this line
+import './components/AccountSettings.css'; // Add this line
 
 function App() {
   return (
@@ -28,6 +30,10 @@ function App() {
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/favorites" element={<div>Favorites</div>} />
+            <Route path="/cart" element={<div>Shopping Cart</div>} />
+            <Route path="/shop-manager" element={<div>Shop Manager</div>} />
+            <Route path="/account-settings" element={<AccountSettings />} />
             {/* Add your additional protected routes here */}
           </Route>
         </Routes>
@@ -37,4 +43,3 @@ function App() {
 }
 
 export default App;
-

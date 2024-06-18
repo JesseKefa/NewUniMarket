@@ -6,6 +6,7 @@ body {
 .landing-container {
   width: 100%;
   overflow: hidden;
+  padding: 0 20px;
 }
 
 .landing-header, .intro-section, .features-section, .categories-section, .landing-footer {
@@ -26,7 +27,9 @@ body {
 
 .landing-header {
   background-color: #f4f4f4;
+  padding: 100px 20px;
   text-align: center;
+  width: 100%;
 }
 
 .landing-header h1 {

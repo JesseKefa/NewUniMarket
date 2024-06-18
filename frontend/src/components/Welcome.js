@@ -13,8 +13,7 @@ const Welcome = () => {
 
   return (
     <div>
-      <h1>Welcome, {username}!</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <h1>Welcome to UniMarket, {username}!</h1>
     </div>
   );
 };
