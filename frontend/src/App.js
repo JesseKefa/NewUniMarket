@@ -13,12 +13,16 @@ import Navbar from './components/Navbar';
 import ShoppingCart from './components/ShoppingCart';
 import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
+import ProductManager from './components/ProductManager';
+import AdminPage from './components/AdminPage';
 import './styles.css';
 import './components/Navbar.css';
 import './components/AccountSettings.css';
 import './components/ShoppingCart.css';
 import './components/Checkout.css';
 import './components/ProductList.css';
+import './components/ProductManager.css';
+import './components/AdminPage.css';
 
 function App() {
   return (
@@ -39,9 +43,10 @@ function App() {
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/favorites" element={<div>Favorites</div>} />
             <Route path="/cart" element={<ShoppingCart />} />
-            <Route path="/shop-manager" element={<div>Shop Manager</div>} />
+            <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Routes>
       </div>

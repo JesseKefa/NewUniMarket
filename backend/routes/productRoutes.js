@@ -1,27 +1,39 @@
 const express = require('express');
+const authMiddleware = require('../middleware/authMiddleware');
+const Product = require('../models/Product');
+
 const router = express.Router();
 
-// Sample products data
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    description: 'Description for Product 1',
-    price: 10,
-    image: '/images/product1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    description: 'Description for Product 2',
-    price: 20,
-    image: '/images/product2.jpg',
-  },
-  // Add more products as needed
-];
+// Get all products
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find().populate('postedBy', 'username');
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
 
-router.get('/', (req, res) => {
-  res.json(products);
+// Create a product
+router.post('/', authMiddleware, async (req, res) => {
+  const { name, description, price, image } = req.body;
+
+  try {
+    const newProduct = new Product({
+      name,
+      description,
+      price,
+      image,
+      postedBy: req.user.id,
+    });
+
+    const product = await newProduct.save();
+    res.json(product);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;

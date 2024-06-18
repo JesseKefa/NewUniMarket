@@ -28,8 +28,19 @@ const UserSchema = new mongoose.Schema({
   },
   otp: {
     type: String
-  }
+  },
+  profileImage: {
+    type: String // URL or base64 string
+  },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
+  products: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
-
