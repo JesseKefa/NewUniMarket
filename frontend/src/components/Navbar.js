@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
@@ -8,6 +8,7 @@ const Navbar = () => {
   const profileImage = localStorage.getItem('profileImage');
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -19,6 +20,19 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
@@ -35,7 +49,7 @@ const Navbar = () => {
             <Link to="/favorites">Favorites</Link>
             <Link to="/cart">Shopping Cart</Link>
             <Link to="/shop-manager">Shop Manager</Link>
-            <div className="profile-menu">
+            <div className="profile-menu" ref={dropdownRef}>
               <img
                 src={profileImage || '/default-profile.png'}
                 alt="Profile"

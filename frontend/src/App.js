@@ -10,9 +10,15 @@ import ForgotPassword from './components/ForgotPassword';
 import PrivateRoute from './components/PrivateRoute';
 import AccountSettings from './components/AccountSettings';
 import Navbar from './components/Navbar';
+import ShoppingCart from './components/ShoppingCart';
+import Checkout from './components/Checkout';
+import ProductList from './components/ProductList';
 import './styles.css';
-import './components/Navbar.css'; // Add this line
-import './components/AccountSettings.css'; // Add this line
+import './components/Navbar.css';
+import './components/AccountSettings.css';
+import './components/ShoppingCart.css';
+import './components/Checkout.css';
+import './components/ProductList.css';
 
 function App() {
   return (
@@ -26,15 +32,16 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/products" element={<ProductList />} />
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/favorites" element={<div>Favorites</div>} />
-            <Route path="/cart" element={<div>Shopping Cart</div>} />
+            <Route path="/cart" element={<ShoppingCart />} />
             <Route path="/shop-manager" element={<div>Shop Manager</div>} />
             <Route path="/account-settings" element={<AccountSettings />} />
-            {/* Add your additional protected routes here */}
+            <Route path="/checkout" element={<Checkout />} />
           </Route>
         </Routes>
       </div>

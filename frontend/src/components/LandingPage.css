@@ -12,17 +12,17 @@ body {
 .landing-header, .intro-section, .features-section, .categories-section, .landing-footer {
   width: 100%;
   box-sizing: border-box;
-  padding: 50px 0; /* Adjusted padding to apply only vertically */
+  padding: 50px 0; 
   margin: 0;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+  justify-content: center; 
+  align-items: center; 
 }
 
 .section-content {
   width: 100%;
-  max-width: 1200px; /* Adjust as needed */
-  padding: 0 20px; /* Horizontal padding for inner content */
+  max-width: 1200px;
+  padding: 0 20px;
 }
 
 .landing-header {

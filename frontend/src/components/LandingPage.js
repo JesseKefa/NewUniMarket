@@ -15,7 +15,7 @@ const LandingPage = () => {
         <div className="section-content">
           <h2>What is UniMarket?</h2>
           <p>
-            UniMarket is a global online marketplace where people come together to buy, sell, and explore unique products. We are committed to making a positive impact on small businesses, people, and the planet.
+            UniMarket is a University marketplace where students come together to buy, sell, and explore unique products. We are committed to making a positive impact on small businesses, people, and the planet.
           </p>
           <a href="#learn-more">Learn more about our story</a>
         </div>
@@ -26,13 +26,13 @@ const LandingPage = () => {
           <div className="feature">
             <h3>A community doing good</h3>
             <p>
-              UniMarket is a place where people come together to create, sell, and buy unique items. We're also pushing for positive change for small businesses, people, and the planet.
+              UniMarket is a place where students come together to create, sell, and buy unique items. We're also pushing for positive change for small businesses, people, and the planet.
             </p>
           </div>
           <div className="feature">
             <h3>Support independent creators</h3>
             <p>
-              UniMarket supports millions of people who are selling what they love. We make it easy for you to connect directly with makers and find extraordinary products.
+              UniMarket supports students who are selling what they love. We make it easy for you to connect directly with makers and find extraordinary products.
             </p>
           </div>
           <div className="feature">

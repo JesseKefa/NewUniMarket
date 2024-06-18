@@ -1,0 +1,16 @@
+.checkout-container {
+    padding: 20px;
+  }
+  
+  .payment-method {
+    margin-bottom: 20px;
+  }
+  
+  .payment-method label {
+    margin-right: 20px;
+  }
+  
+  .mpesa-details, .credit-card-details {
+    margin-bottom: 20px;
+  }
+  
