@@ -1,7 +1,20 @@
 const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
-  name: {
+  shopName: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['physical', 'digital'],
+  },
+  title: {
     type: String,
     required: true,
   },
@@ -13,10 +26,15 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  image: {
-    type: String,
+  quantity: {
+    type: Number,
+    required: true,
   },
-  postedBy: {
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,

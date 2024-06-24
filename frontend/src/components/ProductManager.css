@@ -1,60 +1,56 @@
-.product-manager-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .add-product-form {
-    margin-bottom: 40px;
-  }
-  
-  .add-product-form h2 {
-    margin-bottom: 20px;
-  }
-  
-  .add-product-form form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .add-product-form form input,
-  .add-product-form form textarea {
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .add-product-form form button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .product-list h2 {
-    margin-bottom: 20px;
-  }
-  
-  .product-list ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .product-list ul li {
-    background-color: #f9f9f9;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    flex: 1 1 calc(25% - 40px);
-    box-sizing: border-box;
-  }
-  
-  .product-list ul li img {
-    max-width: 100%;
-    height: auto;
-  }
-  
+.product-manager {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-manager h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.product-manager form {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-manager .step {
+  margin-bottom: 20px;
+}
+
+.product-manager .step h3 {
+  margin-bottom: 10px;
+}
+
+.product-manager input,
+.product-manager textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.product-manager textarea {
+  resize: vertical;
+}
+
+.product-manager input[type="file"] {
+  padding: 3px;
+}
+
+.product-manager button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.product-manager button:hover {
+  background-color: #218838;
+}
