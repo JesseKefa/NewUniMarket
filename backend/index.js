@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
