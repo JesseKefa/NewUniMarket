@@ -9,6 +9,9 @@ const UserSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
   avatar: { type: String },
+  profileImage: {
+    type: String,
+  },
   address: {
     street: String,
     city: String,
