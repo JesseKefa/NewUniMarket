@@ -1,87 +1,8 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
 const router = express.Router();
-
-// Register user
-router.post('/register', async (req, res) => {
-  const { username, email, password, phoneNumber, dob } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-
-    if (user) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    user = new User({ username, email, password, phoneNumber, dob });
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// Login user
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
 
 // Get user profile
 router.get('/profile', authMiddleware, async (req, res) => {
@@ -94,15 +15,25 @@ router.get('/profile', authMiddleware, async (req, res) => {
   }
 });
 
-// Update user profile image
-router.put('/profile/image', authMiddleware, async (req, res) => {
+// Update user profile
+router.put('/profile', authMiddleware, async (req, res) => {
+  const { username, phoneNumber, dob, address, avatar } = req.body;
   try {
-    const { profileImage } = req.body;
-    const user = await User.findByIdAndUpdate(req.user.id, { profileImage }, { new: true });
-    res.json(user);
+    const user = await User.findById(req.user.id);
+    if (user) {
+      user.username = username || user.username;
+      user.phoneNumber = phoneNumber || user.phoneNumber;
+      user.dob = dob || user.dob;
+      user.address = address || user.address;
+      user.avatar = avatar || user.avatar;
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(404).send('User not found');
+    }
   } catch (err) {
-    console.error('Error updating profile image:', err);
-    res.status(500).json({ message: 'Server error' });
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
 });
 

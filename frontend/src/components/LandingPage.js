@@ -62,11 +62,11 @@ const LandingPage = () => {
             </div>
             <div className="category">
               <img src="/images/personalized-gifts.jpg" alt="Personalized gift ideas" />
-              <p>Personalized gift ideas</p>
+              <p>Mothers/Fathers Day gifts</p>
             </div>
             <div className="category">
               <img src="/images/wedding-gifts.jpg" alt="Wedding gifts" />
-              <p>Wedding gifts</p>
+              <p>Birthday gifts</p>
             </div>
           </div>
         </div>

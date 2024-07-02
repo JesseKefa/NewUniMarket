@@ -29,8 +29,8 @@ UniMarket is an online marketplace tailored for university students, allowing th
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 - **Authentication:** JWT (JSON Web Tokens)
-- **Payment Integration:** M-Pesa (Daraja API)
-- **Deployment:** TBD
+- **Payment Integration:** M-Pesa
+- **Deployment:** 
 
 ## Installation
 
@@ -61,7 +61,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
    ```sh
    # Start backend server
    cd backend
-   npm run dev
+   node index.js
 
    # Start frontend server
    cd ../frontend
@@ -101,16 +101,6 @@ UniMarket is an online marketplace tailored for university students, allowing th
 ### Admin Routes
 - `GET /api/admin/users` - Get all users
 - `GET /api/admin/products` - Get all products
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## License
 

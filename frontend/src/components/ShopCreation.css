@@ -1,0 +1,45 @@
+.shop-creation {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .shop-creation h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .shop-creation .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .shop-creation .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .shop-creation .form-group input,
+  .shop-creation .form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .shop-creation button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .shop-creation button:hover {
+    background-color: #218838;
+  }
+  

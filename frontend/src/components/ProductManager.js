@@ -3,7 +3,6 @@ import axios from 'axios';
 import './ProductManager.css';
 
 const ProductManager = () => {
-  const [shopName, setShopName] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('physical');
   const [title, setTitle] = useState('');
@@ -19,7 +18,6 @@ const ProductManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('shopName', shopName);
     formData.append('category', category);
     formData.append('type', type);
     formData.append('title', title);
@@ -29,14 +27,13 @@ const ProductManager = () => {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('/api/products', formData, {
+      const res = await axios.post('http://localhost:5000/api/products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Product added:', res.data);
       // Reset form fields
-      setShopName('');
       setCategory('');
       setType('physical');
       setTitle('');
@@ -51,20 +48,10 @@ const ProductManager = () => {
 
   return (
     <div className="product-manager">
-      <h2>Create Your Shop</h2>
+      <h2>Add a New Product</h2>
       <form onSubmit={handleSubmit}>
         <div className="step">
-          <h3>Name Your Shop</h3>
-          <input
-            type="text"
-            placeholder="Shop Name"
-            value={shopName}
-            onChange={(e) => setShopName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="step">
-          <h3>Tell Us About Your Listing</h3>
+          <h3>Product Details</h3>
           <input
             type="text"
             placeholder="Category"

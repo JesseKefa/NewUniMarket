@@ -38,7 +38,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-left">
         <Link to="/">UniMarket</Link>
-        <Link to="/categories">Categories</Link>
+        <Link to="/products">Products</Link>
       </div>
       <div className="navbar-center">
         <input type="text" placeholder="Search for anything" className="search-bar" />

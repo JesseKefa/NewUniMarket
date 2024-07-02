@@ -1,45 +1,25 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  email: {
+  username: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  phoneNumber: { type: String, required: true },
+  dob: { type: Date, required: true },
+  isVerified: { type: Boolean, default: false },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  avatar: { type: String },
+  address: {
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+    country: String
+  },
+  paymentMethods: [{
     type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  phoneNumber: {
-    type: String,
-    required: true
-  },
-  username: {
-    type: String,
-    required: true
-  },
-  dob: {
-    type: Date,
-    required: true
-  },
-  isVerified: {
-    type: Boolean,
-    default: false
-  },
-  otp: {
-    type: String
-  },
-  profileImage: {
-    type: String // URL or base64 string
-  },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
-  },
-  products: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product'
+    last4: String,
+    expDate: String
   }]
 });
 
