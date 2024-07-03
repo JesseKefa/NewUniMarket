@@ -1,57 +1,38 @@
-const Product = require('../models/Product');
 const multer = require('multer');
-const path = require('path');
+const Product = require('../models/Product');
 
-// Configure multer for file uploads
+// Set up multer for file upload
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: function (req, file, cb) {
     cb(null, 'uploads/');
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
 });
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }, // Limit file size to 1MB
-}).single('file');
+const upload = multer({ storage: storage }).single('image');
 
-exports.addProduct = (req, res) => {
+exports.createProduct = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
-      return res.status(400).json({ msg: 'Error uploading file' });
+      return res.status(500).json({ msg: 'Error uploading file' });
     }
-    const { shopName, category, type, title, description, price, quantity } = req.body;
+
+    const { name, description, price } = req.body;
 
     try {
       const newProduct = new Product({
-        shopName,
-        category,
-        type,
-        title,
+        name,
         description,
         price,
-        quantity,
-        imageUrl: req.file.path,
-        user: req.user.id,
+        image: req.file.path
       });
 
       const product = await newProduct.save();
-      res.json(product);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send('Server error');
+      res.status(201).json(product);
+    } catch (err) {
+      res.status(500).json({ msg: 'Server error' });
     }
   });
-};
-
-exports.getProducts = async (req, res) => {
-  try {
-    const products = await Product.find().populate('user', ['username', 'email']);
-    res.json(products);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
-  }
 };

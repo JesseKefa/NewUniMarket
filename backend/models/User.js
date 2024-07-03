@@ -1,29 +1,51 @@
 const mongoose = require('mongoose');
 
+const addressSchema = new mongoose.Schema({
+  country: String,
+  fullName: String,
+  streetAddress: String,
+  aptSuite: String,
+  city: String,
+  postalCode: String,
+  setDefault: Boolean,
+});
+
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
-  dob: { type: Date, required: true },
-  isVerified: { type: Boolean, default: false },
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  avatar: { type: String },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: String,
+  },
+  username: {
+    type: String,
+  },
+  dob: {
+    type: Date,
+  },
+  gender: {
+    type: String,
+  },
+  about: {
+    type: String,
+  },
+  address: addressSchema,
   profileImage: {
     type: String,
   },
-  address: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String
+  verified: {
+    type: Boolean,
+    default: false,
   },
-  paymentMethods: [{
+  verificationToken: {
     type: String,
-    last4: String,
-    expDate: String
-  }]
+  },
 });
 
 module.exports = mongoose.model('User', UserSchema);

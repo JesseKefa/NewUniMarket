@@ -1,57 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AdminPage.css';
 
-const AdminPage = () => {
-  const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
+const Admin = () => {
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAdminData = async () => {
       try {
-        const usersRes = await axios.get('/api/admin/users');
-        const productsRes = await axios.get('/api/admin/products');
-        const ordersRes = await axios.get('/api/admin/orders');
-        setUsers(usersRes.data);
-        setProducts(productsRes.data);
-        setOrders(ordersRes.data);
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:5000/api/admin', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setMessage(res.data.msg);
       } catch (err) {
-        console.error('Error fetching data:', err);
+        setMessage('Access denied.');
       }
     };
-    fetchData();
+
+    fetchAdminData();
   }, []);
 
   return (
-    <div className="admin-page">
-      <h2>Admin Dashboard</h2>
-      <div className="admin-section">
-        <h3>Users</h3>
-        <ul>
-          {users.map((user) => (
-            <li key={user._id}>{user.username} - {user.email}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="admin-section">
-        <h3>Products</h3>
-        <ul>
-          {products.map((product) => (
-            <li key={product._id}>{product.title} - {product.price}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="admin-section">
-        <h3>Orders</h3>
-        <ul>
-          {orders.map((order) => (
-            <li key={order._id}>Order #{order._id} - {order.status}</li>
-          ))}
-        </ul>
-      </div>
+    <div className="admin-container">
+      <h1>Admin Panel</h1>
+      <p>{message}</p>
     </div>
   );
 };
 
-export default AdminPage;
+export default Admin;
