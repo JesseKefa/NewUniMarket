@@ -3,6 +3,7 @@ const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 // Importing Routes
 const authRoutes = require('./routes/auth');
@@ -10,7 +11,6 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-
 const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();
@@ -34,6 +34,15 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/orders', orderRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  );
+}
 
 const PORT = process.env.PORT || 5000;
 

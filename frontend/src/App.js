@@ -15,9 +15,11 @@ import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
 import AdminPage from './components/AdminPage';
-import Order from './components/Order';
-import ShopCreation from './components/ShopCreation';
-import AdminLogin from './components/AdminLogin';
+
+// Unused imports
+// import Order from './components/Order';
+// import ShopCreation from './components/ShopCreation';
+// import AdminLogin from './components/AdminLogin';
 import './styles.css';
 import './components/Navbar.css';
 import './components/AccountSettings.css';
