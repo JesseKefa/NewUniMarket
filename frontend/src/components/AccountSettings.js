@@ -23,7 +23,7 @@ const AccountSettings = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/user/profile', {
+        const res = await axios.get('http://localhost:5000/api/users/profile', {
           headers: {
             'x-auth-token': localStorage.getItem('token'),
           },
@@ -71,8 +71,7 @@ const AccountSettings = () => {
     }
 
     try {
-      // const res = await axios.put('http://localhost:5000/api/user/profile', form, {
-      await axios.put('http://localhost:5000/api/user/profile', form, {
+      await axios.put('http://localhost:5000/api/users/profile', form, {
         headers: {
           'x-auth-token': localStorage.getItem('token'),
           'Content-Type': 'multipart/form-data',

@@ -50,10 +50,11 @@ UniMarket is an online marketplace tailored for university students, allowing th
 3. Set up environment variables:
    Create a `.env` file in the `backend` directory and add the following:
    ```env
-   MONGO_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
-   MPESA_CONSUMER_KEY=your_mpesa_consumer_key
-   MPESA_CONSUMER_SECRET=your_mpesa_consumer_secret
+   MONGO_URI=mongodb://localhost:27017/unimarket   
+   JWT_SECRET=myverysecretkey12345
+   EMAIL_USER=unimarket633@gmail.com
+   EMAIL_PASS=bcqjuyzwhgifnhml
+   OTP_SECRET=myveryotpsecretkey12345
    ```
 
 4. Start the development servers:
@@ -103,8 +104,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ```
 
-This `README.md` file provides a comprehensive overview of your UniMarket project, including features, technologies used, installation steps, usage instructions, API endpoints, and contribution guidelines. Feel free to customize it further as needed.Sure, here's a basic `README.md` file for your UniMarket project:
 
