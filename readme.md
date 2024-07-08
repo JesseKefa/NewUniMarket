@@ -8,8 +8,8 @@ UniMarket is an online marketplace tailored for university students, allowing th
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
+- [Project Structure](#project-structure)
 - [License](#license)
 
 ## Features
@@ -78,45 +78,6 @@ UniMarket is an online marketplace tailored for university students, allowing th
 6. Checkout using M-Pesa or credit card.
 7. Admin can log in to the admin dashboard to monitor the platform.
 
-## Project Structure
-
-Here is a sample folder structure for the project:
-
-```
-unimarket/
-├── backend/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── productController.js
-│   │   └── userController.js
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   ├── models/
-│   │   ├── Product.js
-│   │   └── User.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── productRoutes.js
-│   │   └── userRoutes.js
-│   ├── .env
-│   ├── index.js
-│   └── package.json
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── App.js
-│   │   ├── index.js
-│   │   └── styles/
-│   ├── .env
-│   ├── package.json
-├── .gitignore
-└── README.md
-```
-
 ## API Endpoints
 
 ### Auth Routes
@@ -140,6 +101,52 @@ unimarket/
 ### Admin Routes
 - `GET /api/admin/users` - Get all users
 - `GET /api/admin/products` - Get all products
+
+## Project Structure
+
+```
+UniMarket/
+│
+├── backend/
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── ...
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   └── Order.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── userRoutes.js
+│   │   └── ...
+│   ├── .env
+│   ├── index.js
+│   └── package.json
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── AccountSettings.js
+│   │   │   ├── Login.js
+│   │   │   └── ...
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   └── ...
+│   ├── .env
+│   ├── package.json
+│   └── ...
+│
+├── .gitignore
+├── README.md
+└── ...
+```
 
 ## License
 
