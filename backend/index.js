@@ -25,6 +25,9 @@ app.use(express.json({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
 
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Define Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -32,8 +35,6 @@ app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/orders', orderRoutes);
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
