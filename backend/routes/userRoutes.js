@@ -2,25 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
-const User = require('../models/User');
-const multer = require('multer');
-const path = require('path');
+const { updateUserProfile, getUserProfile } = require('../controllers/userController');
 const router = express.Router();
-
-// Multer configuration for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads/'));
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }, // 1MB limit
-}).single('profileImage');
 
 // Register user
 router.post('/register', async (req, res) => {
@@ -100,52 +83,9 @@ router.post('/login', async (req, res) => {
 });
 
 // Get user profile
-router.get('/profile', authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+router.get('/profile', authMiddleware, getUserProfile);
 
 // Update user profile
-router.put('/profile', authMiddleware, (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ msg: 'Error uploading file' });
-    }
-
-    const { username, email, phoneNumber, dob, gender, about, address } = req.body;
-
-    const updatedFields = {
-      username,
-      email,
-      phoneNumber,
-      dob,
-      gender,
-      about,
-      address: JSON.parse(address),
-    };
-
-    if (req.file) {
-      updatedFields.profileImage = req.file.filename;
-    }
-
-    try {
-      const user = await User.findByIdAndUpdate(
-        req.user.id,
-        { $set: updatedFields },
-        { new: true }
-      );
-
-      res.json(user);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send('Server error');
-    }
-  });
-});
+router.put('/profile', authMiddleware, updateUserProfile);
 
 module.exports = router;

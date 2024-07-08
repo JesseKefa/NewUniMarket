@@ -15,12 +15,13 @@ UniMarket is an online marketplace tailored for university students, allowing th
 ## Features
 
 - User Registration and Authentication
+- Email Verification and OTP for login
 - User Profile Management
 - Product Listing and Management
 - Shopping Cart and Checkout
 - Admin Dashboard for monitoring
 - Secure Payments with M-Pesa and credit card
-- Email Verification and OTP for login
+
 
 ## Technologies Used
 
@@ -73,7 +74,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
 1. Navigate to `http://localhost:3000` in your web browser.
 2. Register a new user account.
 3. Verify your email and log in.
-4. Add products to your store (if registered as a seller).
+4. Add products to your store.
 5. Browse and add products to the shopping cart.
 6. Checkout using M-Pesa or credit card.
 7. Admin can log in to the admin dashboard to monitor the platform.
@@ -107,45 +108,48 @@ UniMarket is an online marketplace tailored for university students, allowing th
 ```
 UniMarket/
 │
-├── backend/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── productController.js
-│   │   └── ...
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Product.js
-│   │   └── Order.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── userRoutes.js
-│   │   └── ...
-│   ├── .env
-│   ├── index.js
-│   └── package.json
+├── backend/                      # Backend directory containing server-side code
+│   ├── config/                   # Configuration files
+│   │   └── db.js                 # Database connection configuration
+│   ├── controllers/              # Controllers to handle business logic
+│   │   ├── authController.js     # Handles authentication logic
+│   │   ├── productController.js  # Handles product-related logic
+│   │   └── ...                   # Other controllers as needed
+│   ├── middleware/               # Middleware for handling requests
+│   │   └── authMiddleware.js     # Middleware for authentication
+│   ├── models/                   # Database models
+│   │   ├── User.js               # User model schema
+│   │   ├── Product.js            # Product model schema
+│   │   └── Order.js              # Order model schema
+│   ├── routes/                   # Route handlers
+│   │   ├── auth.js               # Authentication routes
+│   │   ├── userRoutes.js         # User-related routes
+│   │   └── ...                   # Other routes as needed
+│   ├── uploads/                  # Directory for uploaded files
+│   ├── .env                      # Environment variables
+│   ├── index.js                  # Entry point for the backend server
+│   └── package.json              # Backend dependencies and scripts
 │
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── AccountSettings.js
-│   │   │   ├── Login.js
-│   │   │   └── ...
-│   │   ├── App.js
-│   │   ├── index.js
-│   │   └── ...
-│   ├── .env
-│   ├── package.json
-│   └── ...
+├── frontend/                     # Frontend directory containing client-side code
+│   ├── public/                   # Publicly accessible files
+│   │   └── index.html            # Main HTML file
+│   ├── src/                      # Source files for the frontend
+│   │   ├── components/           # React components
+│   │   │   ├── AccountSettings.js# Component for account settings
+│   │   │   ├── Login.js          # Component for login
+│   │   │   └── ...               # Other components as needed
+│   │   ├── App.js                # Main App component
+│   │   ├── index.js              # Entry point for the React application
+│   │   └── ...                   # Other source files as needed
+│   ├── .env                      # Environment variables
+│   ├── package.json              # Frontend dependencies and scripts
+│   └── ...                       # Other frontend files
 │
-├── .gitignore
-├── README.md
-└── ...
+├── .gitignore                    # Specifies files to be ignored by Git
+├── README.md                     # Project documentation
+└── ...                           # Other files and directories as needed
+
+
 ```
 
 ## License
