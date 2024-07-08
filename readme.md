@@ -149,7 +149,6 @@ UniMarket/
 ├── README.md                     # Project documentation
 └── ...                           # Other files and directories as needed
 
-
 ```
 
 ## License
