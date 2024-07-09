@@ -14,12 +14,9 @@ import ShoppingCart from './components/ShoppingCart';
 import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
+import AdminLogin from './components/AdminLogin'; // Add the AdminLogin import
 import AdminPage from './components/AdminPage';
 
-// Unused imports
-// import Order from './components/Order';
-// import ShopCreation from './components/ShopCreation';
-// import AdminLogin from './components/AdminLogin';
 import './styles.css';
 import './components/Navbar.css';
 import './components/AccountSettings.css';
@@ -42,6 +39,7 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the admin login route */}
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
@@ -51,7 +49,7 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin-dashboard" element={<AdminPage />} /> {/* Add the admin dashboard route */}
           </Route>
         </Routes>
       </div>

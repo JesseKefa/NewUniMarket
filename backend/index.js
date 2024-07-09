@@ -1,3 +1,5 @@
+// backend/index.js
+
 const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
@@ -11,6 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();
@@ -24,15 +27,17 @@ connectDB();
 app.use(express.json({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Define Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/orders', orderRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// frontend/src/components/Login.js
 
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,13 +29,13 @@ const Login = () => {
         navigate('/welcome');
       }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      setMessage(err.response?.data?.msg || 'Login failed');
+      setMessage(err.response.data.message);
       setMessageType('error');
     }
   };
 
   return (
-    <div className="login-container">
+    <div>
       <h1>Login</h1>
       <form onSubmit={onSubmit}>
         <input
@@ -57,11 +58,12 @@ const Login = () => {
       </form>
       {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
       <div className="forgot-password">
-        <a href="/forgot-password">Forgot Password?</a>
+        <Link to="/forgot-password">Forgot Password?</Link>
+        <Link to="">       </Link>
+        <Link to="/admin-login">Admin Login</Link> {/* Add Admin Login link */}
       </div>
     </div>
   );
 };
 
 export default Login;
-

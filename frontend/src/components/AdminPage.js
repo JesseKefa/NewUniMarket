@@ -1,34 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './AdminPage.css';
+// frontend/src/components/AdminPage.js
 
-const Admin = () => {
-  const [message, setMessage] = useState('');
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-  useEffect(() => {
-    const fetchAdminData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/admin', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setMessage(res.data.msg);
-      } catch (err) {
-        setMessage('Access denied.');
-      }
-    };
-
-    fetchAdminData();
-  }, []);
-
+const AdminPage = () => {
   return (
-    <div className="admin-container">
-      <h1>Admin Panel</h1>
-      <p>{message}</p>
+    <div>
+      <h1>Admin Dashboard</h1>
+      <nav>
+        <ul>
+          <li><Link to="/admin/users">Manage Users</Link></li>
+          <li><Link to="/admin/products">Manage Products</Link></li>
+          <li><Link to="/admin/orders">View Orders</Link></li>
+          <li><Link to="/admin/categories">Manage Categories</Link></li>
+        </ul>
+      </nav>
     </div>
   );
 };
 
-export default Admin;
+export default AdminPage;
