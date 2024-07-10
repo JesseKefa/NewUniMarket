@@ -1,5 +1,3 @@
-// backend/index.js
-
 const express = require('express');
 const connectDB = require('./config/db');
 const dotenv = require('dotenv');
@@ -12,8 +10,8 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-const adminRoutes = require('./routes/adminRoutes');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();

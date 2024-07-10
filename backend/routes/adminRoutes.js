@@ -1,9 +1,9 @@
-// backend/routes/adminRoutes.js
-
 const express = require('express');
+const { getAllUsers, getAllProducts } = require('../controllers/adminController'); // Ensure these functions are correctly imported
 const router = express.Router();
-const { loginAdmin } = require('../controllers/adminController');
 
-router.post('/login', loginAdmin);
+// Define admin routes
+router.get('/users', getAllUsers);
+router.get('/products', getAllProducts);
 
 module.exports = router;

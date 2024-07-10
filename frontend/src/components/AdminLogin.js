@@ -1,59 +1,48 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('');
   const navigate = useNavigate();
-
-  const { email, password } = formData;
-
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const formData = { email, password };
+
     try {
       const res = await axios.post('http://localhost:5000/api/admin/auth/login', formData);
-      setMessage('Login successful!');
-      setMessageType('success');
-      localStorage.setItem('adminToken', res.data.token);
-      setTimeout(() => {
-        navigate('/admin-dashboard'); // Navigate to the admin dashboard after login
-      }, 2000); // Delay the navigation to show the success message
+      localStorage.setItem('token', res.data.token);
+      navigate('/admin'); // Navigate to admin dashboard or desired page after login
     } catch (err) {
-      setMessage(err.response.data.message);
-      setMessageType('error');
+      console.error('Error logging in admin:', err);
+      setMessage('Login failed');
     }
   };
 
   return (
     <div>
-      <h1>Admin Login</h1>
+      <h2>Admin Login</h2>
       <form onSubmit={onSubmit}>
         <input
           type="email"
-          name="email"
-          value={email}
-          onChange={onChange}
           placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
           type="password"
-          name="password"
-          value={password}
-          onChange={onChange}
           placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button type="submit">Login</button>
       </form>
-      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      {message && <p style={{ color: 'red' }}>{message}</p>}
     </div>
   );
 };

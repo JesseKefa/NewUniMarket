@@ -2,7 +2,7 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.loginAdmin = async (req, res) => {
+const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -27,7 +27,7 @@ exports.loginAdmin = async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: '5h' },
+      { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
@@ -37,4 +37,8 @@ exports.loginAdmin = async (req, res) => {
     console.error(err.message);
     res.status(500).send('Server error');
   }
+};
+
+module.exports = {
+  loginAdmin
 };
