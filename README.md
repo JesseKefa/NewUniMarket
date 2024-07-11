@@ -25,10 +25,10 @@ UniMarket is an online marketplace tailored for university students, allowing th
 
 ## Technologies Used
 
-- **Frontend:** React, HTML, CSS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
-- **Authentication:** JWT (JSON Web Tokens)
+- **Frontend:** [React](https://reactjs.org/), HTML, CSS
+- **Backend:** [Node.js](https://nodejs.org/), [Express.js](https://expressjs.com/)
+- **Database:** [MongoDB](https://www.mongodb.com/)
+- **Authentication:** [JWT (JSON Web Tokens)](https://jwt.io/)
 - **Payment Integration:** M-Pesa
 - **Deployment:** 
 
