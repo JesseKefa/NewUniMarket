@@ -34,40 +34,40 @@ UniMarket is an online marketplace tailored for university students, allowing th
 
 ## Installation
 
-1. Clone the repository on any command line:
-   ```sh
-   git clone https://github.com/JesseKefa/unimarket.git
-   ```
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/JesseKefa/unimarket.git
+   ```
 
 2. Install dependencies for both frontend and backend:
-   ```sh
-   cd unimarket/frontend
-   npm install
+   ```sh
+   cd unimarket/frontend
+   npm install
 
-   cd ../backend
-   npm install
-   ```
+   cd ../backend
+   npm install
+   ```
 
 3. Set up environment variables:
-   Create a `.env` file in the `backend` directory and add the following:
-   ```env
-   MONGO_URI=mongodb://localhost:27017/unimarket   
-   JWT_SECRET=myverysecretkey12345
-   EMAIL_USER=unimarket633@gmail.com
-   EMAIL_PASS=bcqjuyzwhgifnhml
-   OTP_SECRET=myveryotpsecretkey12345
-   ```
+   Create a `.env` file in the `backend` directory and add the following:
+   ```env
+   MONGO_URI=mongodb://localhost:27017/unimarket   
+   JWT_SECRET=myverysecretkey12345
+   EMAIL_USER=unimarket633@gmail.com
+   EMAIL_PASS=bcqjuyzwhgifnhml
+   OTP_SECRET=myveryotpsecretkey12345
+   ```
 
 4. Start the development servers:
-   ```sh
-   # Start backend server
-   cd backend
-   node index.js
+   ```sh
+   # Start backend server
+   cd backend
+   node index.js
 
-   # Start frontend server
-   cd ../frontend
-   npm start
-   ```
+   # Start frontend server
+   cd ../frontend
+   npm start
+   ```
 
 ## Usage
 
@@ -154,3 +154,32 @@ UniMarket/
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
