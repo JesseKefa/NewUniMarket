@@ -1,44 +1,18 @@
-const Admin = require('../models/Admin');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const Product = require('../models/Product');
+const Order = require('../models/Order');
 
-const loginAdmin = async (req, res) => {
-  const { email, password } = req.body;
-
+const getDashboardData = async (req, res) => {
   try {
-    let admin = await Admin.findOne({ email });
+    const usersCount = await User.countDocuments();
+    const productsCount = await Product.countDocuments();
+    const ordersCount = await Order.countDocuments();
+    const orders = await Order.find().populate('user').populate('products.product');
 
-    if (!admin) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const isMatch = await bcrypt.compare(password, admin.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const payload = {
-      admin: {
-        id: admin.id,
-      },
-    };
-
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      }
-    );
+    res.json({ usersCount, productsCount, ordersCount, orders });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-module.exports = {
-  loginAdmin
-};
+module.exports = { getDashboardData };

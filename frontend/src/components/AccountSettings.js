@@ -23,9 +23,10 @@ const AccountSettings = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const token = localStorage.getItem('token');
         const res = await axios.get('http://localhost:5000/api/users/profile', {
           headers: {
-            'x-auth-token': localStorage.getItem('token'),
+            'x-auth-token': token,
           },
         });
         setFormData(res.data);
@@ -38,17 +39,21 @@ const AccountSettings = () => {
   }, []);
 
   const onChange = (e) => {
-    if (e.target.name.startsWith('address.')) {
-      const addressField = e.target.name.split('.')[1];
+    const { name, value, type, checked } = e.target;
+    if (name.startsWith('address.')) {
+      const addressField = name.split('.')[1];
       setFormData((prevData) => ({
         ...prevData,
         address: {
           ...prevData.address,
-          [addressField]: e.target.value,
+          [addressField]: type === 'checkbox' ? checked : value,
         },
       }));
     } else {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
     }
   };
 
@@ -71,9 +76,10 @@ const AccountSettings = () => {
     }
 
     try {
+      const token = localStorage.getItem('token');
       await axios.put('http://localhost:5000/api/users/profile', form, {
         headers: {
-          'x-auth-token': localStorage.getItem('token'),
+          'x-auth-token': token,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -134,7 +140,7 @@ const AccountSettings = () => {
             <input type="text" name="address.postalCode" value={formData.address.postalCode} onChange={onChange} />
           </div>
           <div>
-            <input type="checkbox" name="address.setAsDefault" checked={formData.address.setAsDefault} onChange={(e) => onChange({ ...e, target: { ...e.target, value: e.target.checked } })} /> Set as default
+            <input type="checkbox" name="address.setAsDefault" checked={formData.address.setAsDefault} onChange={onChange} /> Set as default
           </div>
         </div>
         <button type="submit">Save Changes</button>

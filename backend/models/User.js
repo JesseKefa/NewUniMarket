@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema({
   about: {
     type: String,
   },
-  address: addressSchema,
+  address: [addressSchema],
   profileImage: {
     type: String,
   },
@@ -45,6 +45,14 @@ const UserSchema = new mongoose.Schema({
   },
   verificationToken: {
     type: String,
+  },
+  roles: {
+    type: [String],
+    default: ['user'],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

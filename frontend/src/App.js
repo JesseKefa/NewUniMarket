@@ -14,8 +14,16 @@ import ShoppingCart from './components/ShoppingCart';
 import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
-import AdminLogin from './components/AdminLogin'; // Add the AdminLogin import
+import AdminLogin from './components/AdminLogin';
+
+import Sidebar from './components/Sidebar';
 import AdminPage from './components/AdminPage';
+import Dashboard from './components/Dashboard';
+import Users from './components/Users';
+import Products from './components/Products';
+import Orders from './components/Orders';
+import Categories from './components/Categories';
+
 
 import './styles.css';
 import './components/Navbar.css';
@@ -27,9 +35,11 @@ import './components/ProductManager.css';
 import './components/AdminPage.css';
 
 function App() {
+  const isAdminRoute = window.location.pathname.startsWith('/admin');
+
   return (
     <Router>
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       <div className="container">
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -39,7 +49,7 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<ProductList />} />
-          <Route path="/admin-login" element={<AdminLogin />} /> {/* Add the admin login route */}
+          <Route path="/admin-login" element={<AdminLogin />} />
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
@@ -49,7 +59,13 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin-dashboard" element={<AdminPage />} /> {/* Add the admin dashboard route */}
+            <Route path="/admin" element={<AdminPage />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="users" element={<Users />} />
+              <Route path="products" element={<Products />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="categories" element={<Categories />} />
+            </Route>
           </Route>
         </Routes>
       </div>

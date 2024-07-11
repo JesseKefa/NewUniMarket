@@ -1,31 +1,54 @@
-.admin-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .admin-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .admin-section {
-    margin-bottom: 40px;
-  }
-  
-  .admin-section h2 {
-    margin-bottom: 10px;
-  }
-  
-  .admin-section ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .admin-section ul li {
-    background-color: #f9f9f9;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
+/* AdminPage.css */
+.admin-page {
+  display: flex;
+}
+
+.admin-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+}
+
+/* Sidebar.css */
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background: #2c3e50;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  background: #1a252f;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+  border-bottom: 1px solid #1a252f;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+}
+
+.sign-out-button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 20px;
+  cursor: pointer;
+  width: calc(100% - 40px);
+  text-align: center;
+}

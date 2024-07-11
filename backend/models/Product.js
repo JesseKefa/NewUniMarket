@@ -9,6 +9,19 @@ const ProductSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   photos: { type: [String], required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  reviews: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true },
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

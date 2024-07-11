@@ -17,10 +17,12 @@ const upload = multer({
   limits: { fileSize: 1000000 }, // 1MB limit
 }).single('profileImage');
 
-// Get user profile
-exports.getUserProfile = async (req, res) => {
+const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -28,8 +30,7 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-// Update user profile
-exports.updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ msg: 'Error uploading file' });
@@ -64,4 +65,9 @@ exports.updateUserProfile = (req, res) => {
       res.status(500).send('Server error');
     }
   });
+};
+
+module.exports = {
+  getUserProfile,
+  updateUserProfile,
 };
