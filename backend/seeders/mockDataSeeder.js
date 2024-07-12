@@ -1,75 +1,87 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
-const connectDB = require('../config/db');
+const bcrypt = require('bcryptjs');
 
-dotenv.config();
+dotenv.config({ path: '../.env' }); // Ensure the correct path to the .env file
+const db = process.env.MONGO_URI;
 
-const seedMockData = async () => {
-  await connectDB();
+if (!db) {
+  console.error('MongoDB URI is not defined');
+  process.exit(1);
+}
 
-  const mockUsers = [];
+const mockUsers = async () => {
+  await User.deleteMany();
+  const users = [];
+
   for (let i = 1; i <= 30; i++) {
-    const user = new User({
-      email: `user${i}@example.com`,
-      password: await bcrypt.hash('userpassword', 10),
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(`password${i}`, salt);
+    users.push({
       username: `user${i}`,
-      gender: i % 2 === 0 ? 'Male' : 'Female',
-      about: `About User ${i}`,
-      address: {
-        country: 'Country',
-        fullName: `User ${i} FullName`,
-        streetAddress: `Street Address ${i}`,
-        aptSuite: `Apt Suite ${i}`,
-        city: `City ${i}`,
-        postalCode: `Postal Code ${i}`,
-        setDefault: true,
-      },
+      email: `user${i}@example.com`,
+      password: hashedPassword,
+      role: 'user',
     });
-    mockUsers.push(user);
   }
 
-  const mockProducts = [];
-  for (let i = 1; i <= 10; i++) {
-    const product = new Product({
-      category: `Category ${i}`,
-      type: 'Physical',
-      title: `Product ${i}`,
-      description: `Description for product ${i}`,
-      price: i * 10,
-      quantity: i * 5,
-      photos: [`https://example.com/photo${i}.jpg`],
-      user: mockUsers[i % mockUsers.length]._id,
-    });
-    mockProducts.push(product);
-  }
-
-  const mockOrders = [];
-  for (let i = 1; i <= 20; i++) {
-    const order = new Order({
-      user: mockUsers[i % mockUsers.length]._id,
-      products: mockProducts.slice(0, 3).map((product) => ({
-        product: product._id,
-        quantity: 1,
-      })),
-      total: 30,
-      status: 'pending'
-    });
-    mockOrders.push(order);
-  }
-
-  await User.insertMany(mockUsers);
-  await Product.insertMany(mockProducts);
-  await Order.insertMany(mockOrders);
-
-  console.log('Mock data seeded');
-  mongoose.disconnect();
+  await User.insertMany(users);
+  console.log('Mock users added');
 };
 
-seedMockData().catch((err) => {
-  console.error('Error seeding mock data:', err);
-  mongoose.disconnect();
-});
+const mockProducts = async () => {
+  await Product.deleteMany();
+  const products = [];
+
+  for (let i = 1; i <= 20; i++) {
+    products.push({
+      name: `Product ${i}`,
+      description: `Description for product ${i}`,
+      price: Math.floor(Math.random() * 100) + 1,
+      stock: Math.floor(Math.random() * 50) + 1,
+    });
+  }
+
+  await Product.insertMany(products);
+  console.log('Mock products added');
+};
+
+const mockOrders = async () => {
+  await Order.deleteMany();
+  const orders = [];
+
+  const users = await User.find();
+  const products = await Product.find();
+
+  for (let i = 1; i <= 20; i++) {
+    const user = users[Math.floor(Math.random() * users.length)];
+    const product = products[Math.floor(Math.random() * products.length)];
+    orders.push({
+      user: user._id,
+      products: [{ product: product._id, quantity: Math.floor(Math.random() * 5) + 1 }],
+      totalAmount: product.price * Math.floor(Math.random() * 5) + 1,
+      status: 'completed',
+    });
+  }
+
+  await Order.insertMany(orders);
+  console.log('Mock orders added');
+};
+
+const seedMockData = async () => {
+  await mongoose.connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  await mockUsers();
+  await mockProducts();
+  await mockOrders();
+
+  mongoose.connection.close();
+};
+
+seedMockData();
