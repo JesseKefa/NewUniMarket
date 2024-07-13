@@ -1,7 +1,11 @@
 const Admin = require('../models/Admin');
+const User = require('../models/User');
+const Product = require('../models/Product');
+const Order = require('../models/Order');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// Admin login function
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -39,6 +43,73 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+// Dashboard data function
+const getDashboardData = async (req, res) => {
+  try {
+    const usersCount = await User.countDocuments();
+    const productsCount = await Product.countDocuments();
+    const ordersCount = await Order.countDocuments();
+
+    res.json({
+      usersCount,
+      productsCount,
+      ordersCount
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Manage users
+const manageUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Manage products
+const manageProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// View orders
+const viewOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Manage categories
+const manageCategories = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    res.json(categories);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
 module.exports = {
-  loginAdmin
+  loginAdmin,
+  getDashboardData,
+  manageUsers,
+  manageProducts,
+  viewOrders,
+  manageCategories
 };
