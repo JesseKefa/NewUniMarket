@@ -14,16 +14,23 @@ const Categories = () => {
     }
   };
 
+  const deleteCategory = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/admin/categories/${id}`);
+      fetchCategories();
+    } catch (error) {
+      setError(error.response?.data?.message || 'Error deleting category');
+    }
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  if (error) return <div>Error fetching categories</div>;
-  if (!categories.length) return <div>Loading...</div>;
-
   return (
     <div>
       <h2>Manage Categories</h2>
+      {error && <div>{error}</div>}
       <table>
         <thead>
           <tr>
@@ -36,8 +43,8 @@ const Categories = () => {
             <tr key={category._id}>
               <td>{category.name}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+                <button className="button">Edit</button>
+                <button className="button" onClick={() => deleteCategory(category._id)}>Delete</button>
               </td>
             </tr>
           ))}

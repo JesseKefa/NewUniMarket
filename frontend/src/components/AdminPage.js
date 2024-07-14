@@ -1,30 +1,34 @@
-// frontend/src/components/AdminPage.js
-
 import React from 'react';
-import Sidebar from './Sidebar';
+import { Route, Link, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Users from './Users';
 import Products from './Products';
 import Orders from './Orders';
 import Categories from './Categories';
+import './AdminPage.css';
 
 const AdminPage = () => {
   return (
-    <Router>
-      <div className="admin-panel">
-        <Sidebar />
-        <div className="content">
-          <Switch>
-            <Route path="/admin/dashboard" component={Dashboard} />
-            <Route path="/admin/users" component={Users} />
-            <Route path="/admin/products" component={Products} />
-            <Route path="/admin/orders" component={Orders} />
-            <Route path="/admin/categories" component={Categories} />
-          </Switch>
-        </div>
+    <div className="container">
+      <div className="sidebar">
+        <h2>Admin Panel</h2>
+        <Link to="dashboard">Dashboard</Link>
+        <Link to="users">Manage Users</Link>
+        <Link to="products">Manage Products</Link>
+        <Link to="orders">View Orders</Link>
+        <Link to="categories">Manage Categories</Link>
+        <Link to="/" className="signout-button">Sign Out</Link>
       </div>
-    </Router>
+      <div className="content">
+        <Routes>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={<Users />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="categories" element={<Categories />} />
+        </Routes>
+      </div>
+    </div>
   );
 };
 

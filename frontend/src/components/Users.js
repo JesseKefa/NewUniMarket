@@ -14,22 +14,27 @@ const Users = () => {
     }
   };
 
+  const deleteUser = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/admin/users/${id}`);
+      fetchUsers();
+    } catch (error) {
+      setError(error.response?.data?.message || 'Error deleting user');
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  if (error) return <div>Error fetching users</div>;
-  if (!users.length) return <div>Loading...</div>;
-
   return (
     <div>
       <h2>Manage Users</h2>
+      {error && <div>{error}</div>}
       <table>
         <thead>
           <tr>
             <th>Email</th>
-            <th>Roles</th>
-            <th>Verified</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -37,11 +42,8 @@ const Users = () => {
           {users.map((user) => (
             <tr key={user._id}>
               <td>{user.email}</td>
-              <td>{user.roles.join(', ')}</td>
-              <td>{user.verified ? 'Yes' : 'No'}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+                <button className="button" onClick={() => deleteUser(user._id)}>Delete</button>
               </td>
             </tr>
           ))}

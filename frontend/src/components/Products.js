@@ -14,23 +14,27 @@ const Products = () => {
     }
   };
 
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/admin/products/${id}`);
+      fetchProducts();
+    } catch (error) {
+      setError(error.response?.data?.message || 'Error deleting product');
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  if (error) return <div>Error fetching products</div>;
-  if (!products.length) return <div>Loading...</div>;
-
   return (
     <div>
       <h2>Manage Products</h2>
+      {error && <div>{error}</div>}
       <table>
         <thead>
           <tr>
             <th>Title</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Quantity</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -38,12 +42,9 @@ const Products = () => {
           {products.map((product) => (
             <tr key={product._id}>
               <td>{product.title}</td>
-              <td>{product.type}</td>
-              <td>{product.category}</td>
-              <td>{product.quantity}</td>
               <td>
-                <button>Edit</button>
-                <button>Delete</button>
+                <button className="button">Edit</button>
+                <button className="button" onClick={() => deleteProduct(product._id)}>Delete</button>
               </td>
             </tr>
           ))}
