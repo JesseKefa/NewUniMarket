@@ -24,7 +24,6 @@ import Products from './components/Products';
 import Orders from './components/Orders';
 import Categories from './components/Categories';
 
-
 import './styles.css';
 import './components/Navbar.css';
 import './components/AccountSettings.css';
@@ -59,7 +58,7 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin" element={<AdminPage />}>
+            <Route path="/admin/*" element={<AdminPage />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />

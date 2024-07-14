@@ -3,53 +3,35 @@ import axios from 'axios';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [error, setError] = useState(null);
-
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/admin/products');
-      setProducts(response.data);
-    } catch (error) {
-      setError(error.response?.data?.message || 'Error fetching products');
-    }
-  };
-
-  const deleteProduct = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/admin/products/${id}`);
-      fetchProducts();
-    } catch (error) {
-      setError(error.response?.data?.message || 'Error deleting product');
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('/api/admin/products');
+        setProducts(response.data);
+      } catch (err) {
+        console.error('Error fetching products', err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchProducts();
   }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (!products.length) return <div>Error fetching products</div>;
 
   return (
     <div>
       <h2>Manage Products</h2>
-      {error && <div>{error}</div>}
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product._id}>
-              <td>{product.title}</td>
-              <td>
-                <button className="button">Edit</button>
-                <button className="button" onClick={() => deleteProduct(product._id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ul>
+        {products.map(product => (
+          <li key={product._id}>
+            {product.title}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

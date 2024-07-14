@@ -3,53 +3,35 @@ import axios from 'axios';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/admin/categories');
-      setCategories(response.data);
-    } catch (error) {
-      setError(error.response?.data?.message || 'Error fetching categories');
-    }
-  };
-
-  const deleteCategory = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/admin/categories/${id}`);
-      fetchCategories();
-    } catch (error) {
-      setError(error.response?.data?.message || 'Error deleting category');
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/admin/categories');
+        setCategories(response.data);
+      } catch (err) {
+        console.error('Error fetching categories', err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchCategories();
   }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (!categories.length) return <div>Error fetching categories</div>;
 
   return (
     <div>
       <h2>Manage Categories</h2>
-      {error && <div>{error}</div>}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category) => (
-            <tr key={category._id}>
-              <td>{category.name}</td>
-              <td>
-                <button className="button">Edit</button>
-                <button className="button" onClick={() => deleteCategory(category._id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ul>
+        {categories.map(category => (
+          <li key={category}>
+            {category}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
