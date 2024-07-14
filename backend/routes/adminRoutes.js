@@ -1,12 +1,11 @@
 const express = require('express');
-const { getDashboardData, manageUsers, manageProducts, viewOrders, manageCategories } = require('../controllers/adminController');
-const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
+const adminController = require('../controllers/adminController');
 
-router.get('/dashboard-data', authMiddleware, getDashboardData);
-router.get('/users', authMiddleware, manageUsers);
-router.get('/products', authMiddleware, manageProducts);
-router.get('/orders', authMiddleware, viewOrders);
-router.get('/categories', authMiddleware, manageCategories);
+router.get('/dashboard-data', adminController.getDashboardData);
+router.get('/users', adminController.getUsers);
+router.get('/products', adminController.getProducts);
+router.get('/orders', adminController.getOrders);
+router.get('/categories', adminController.getCategories);
 
 module.exports = router;

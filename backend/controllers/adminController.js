@@ -43,26 +43,20 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-// Dashboard data function
 const getDashboardData = async (req, res) => {
   try {
     const usersCount = await User.countDocuments();
     const productsCount = await Product.countDocuments();
     const ordersCount = await Order.countDocuments();
-
-    res.json({
-      usersCount,
-      productsCount,
-      ordersCount
-    });
+    const categoriesCount = await Category.countDocuments();
+    res.json({ usersCount, productsCount, ordersCount, categoriesCount });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Manage users
-const manageUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -72,8 +66,7 @@ const manageUsers = async (req, res) => {
   }
 };
 
-// Manage products
-const manageProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -83,10 +76,9 @@ const manageProducts = async (req, res) => {
   }
 };
 
-// View orders
-const viewOrders = async (req, res) => {
+const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate('user', 'email');
     res.json(orders);
   } catch (err) {
     console.error(err.message);
@@ -94,8 +86,7 @@ const viewOrders = async (req, res) => {
   }
 };
 
-// Manage categories
-const manageCategories = async (req, res) => {
+const getCategories = async (req, res) => {
   try {
     const categories = await Category.find();
     res.json(categories);
@@ -105,11 +96,13 @@ const manageCategories = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   loginAdmin,
   getDashboardData,
-  manageUsers,
-  manageProducts,
-  viewOrders,
-  manageCategories
+  getUsers,
+  getProducts,
+  getOrders,
+  getCategories
 };
