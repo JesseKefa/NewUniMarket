@@ -1,17 +1,30 @@
-// AdminPage.js
+// frontend/src/components/AdminPage.js
+
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import './AdminPage.css';
+import Dashboard from './Dashboard';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Users from './Users';
+import Products from './Products';
+import Orders from './Orders';
+import Categories from './Categories';
 
 const AdminPage = () => {
   return (
-    <div className="admin-page">
-      <Sidebar />
-      <div className="admin-content">
-        <Outlet />
+    <Router>
+      <div className="admin-panel">
+        <Sidebar />
+        <div className="content">
+          <Switch>
+            <Route path="/admin/dashboard" component={Dashboard} />
+            <Route path="/admin/users" component={Users} />
+            <Route path="/admin/products" component={Products} />
+            <Route path="/admin/orders" component={Orders} />
+            <Route path="/admin/categories" component={Categories} />
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 

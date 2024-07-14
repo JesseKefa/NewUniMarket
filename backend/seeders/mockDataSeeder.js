@@ -3,85 +3,94 @@ const dotenv = require('dotenv');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
-const bcrypt = require('bcryptjs');
 
-dotenv.config({ path: '../.env' }); // Ensure the correct path to the .env file
-const db = process.env.MONGO_URI;
+// Load environment variables from .env file located in the backend directory
+dotenv.config({ path: require('path').resolve(__dirname, '../.env') });
 
-if (!db) {
+const mongoURI = process.env.MONGO_URI;
+
+if (!mongoURI) {
   console.error('MongoDB URI is not defined');
   process.exit(1);
 }
 
-const mockUsers = async () => {
-  await User.deleteMany();
+console.log(`MongoDB URI: ${mongoURI}`);
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB Connected...'))
+.catch(err => {
+  console.error('MongoDB connection error:', err);
+  process.exit(1);
+});
+
+const seedUsers = async () => {
   const users = [];
-
-  for (let i = 1; i <= 30; i++) {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(`password${i}`, salt);
-    users.push({
-      username: `user${i}`,
-      email: `user${i}@example.com`,
-      password: hashedPassword,
-      role: 'user',
-    });
+  for (let i = 0; i < 30; i++) {
+    users.push(new User({
+      name: `User${i + 1}`,
+      email: `user${i + 1}@example.com`,
+      password: 'password', // This should ideally be hashed
+    }));
   }
-
   await User.insertMany(users);
-  console.log('Mock users added');
+  console.log('Users seeded');
 };
 
-const mockProducts = async () => {
-  await Product.deleteMany();
+const seedProducts = async () => {
   const products = [];
-
-  for (let i = 1; i <= 20; i++) {
-    products.push({
-      name: `Product ${i}`,
-      description: `Description for product ${i}`,
+  for (let i = 0; i < 30; i++) {
+    products.push(new Product({
+      title: `Product${i + 1}`,
+      type: 'Type' + (i % 5 + 1), // Example types: Type1, Type2, ...
+      category: 'Category' + (i % 3 + 1), // Example categories: Category1, Category2, ...
       price: Math.floor(Math.random() * 100) + 1,
-      stock: Math.floor(Math.random() * 50) + 1,
-    });
+      quantity: Math.floor(Math.random() * 100) + 1,
+      description: `Description for product${i + 1}`,
+    }));
   }
-
   await Product.insertMany(products);
-  console.log('Mock products added');
+  console.log('Products seeded');
 };
 
-const mockOrders = async () => {
-  await Order.deleteMany();
-  const orders = [];
-
+const seedOrders = async () => {
   const users = await User.find();
   const products = await Product.find();
 
-  for (let i = 1; i <= 20; i++) {
+  const orders = [];
+  for (let i = 0; i < 30; i++) {
     const user = users[Math.floor(Math.random() * users.length)];
     const product = products[Math.floor(Math.random() * products.length)];
-    orders.push({
+
+    orders.push(new Order({
+      product: product._id,
       user: user._id,
-      products: [{ product: product._id, quantity: Math.floor(Math.random() * 5) + 1 }],
-      totalAmount: product.price * Math.floor(Math.random() * 5) + 1,
-      status: 'completed',
-    });
+      quantity: Math.floor(Math.random() * 10) + 1,
+      paymentMethod: 'Credit Card', // or any other payment method
+      total: product.price * (Math.floor(Math.random() * 10) + 1),
+    }));
   }
-
   await Order.insertMany(orders);
-  console.log('Mock orders added');
+  console.log('Orders seeded');
 };
 
-const seedMockData = async () => {
-  await mongoose.connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  await mockUsers();
-  await mockProducts();
-  await mockOrders();
-
-  mongoose.connection.close();
+const seedDatabase = async () => {
+  try {
+    await mongoose.connection.dropCollection('users');
+    await mongoose.connection.dropCollection('products');
+    await mongoose.connection.dropCollection('orders');
+    console.log('Collections dropped');
+    
+    await seedUsers();
+    await seedProducts();
+    await seedOrders();
+    mongoose.connection.close();
+  } catch (error) {
+    console.error('Seeding error:', error);
+    mongoose.connection.close();
+  }
 };
 
-seedMockData();
+seedDatabase().catch(err => console.error(err));

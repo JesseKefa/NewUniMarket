@@ -3,43 +3,43 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const config = {
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get('http://localhost:5000/api/admin/dashboard-data', {
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
-        };
-        const res = await axios.get('http://localhost:5000/api/admin/dashboard-data', config);
-        setDashboardData(res.data);
-      } catch (err) {
-        console.error('Error fetching dashboard data', err);
+        });
+        setDashboardData(response.data);
+      } catch (error) {
         setError('Error fetching dashboard data');
+        console.error('Error fetching dashboard data', error);
       }
     };
 
     fetchDashboardData();
   }, []);
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!dashboardData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      <h2>Admin Dashboard</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {dashboardData ? (
-        <div>
-          {/* Render your dashboard data here */}
-          <p>Users: {dashboardData.users}</p>
-          <p>Products: {dashboardData.products}</p>
-          <p>Orders: {dashboardData.orders}</p>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <h1>Admin Dashboard</h1>
+      <div>
+        <h2>Users: {dashboardData.usersCount}</h2>
+        <h2>Products: {dashboardData.productsCount}</h2>
+        <h2>Orders: {dashboardData.ordersCount}</h2>
+      </div>
     </div>
   );
 };
