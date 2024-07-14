@@ -19,8 +19,9 @@ UniMarket is an online marketplace tailored for university students, allowing th
 - User Profile Management
 - Product Listing and Management
 - Shopping Cart and Checkout
-- Admin Dashboard for monitoring
 - Secure Payments with M-Pesa and credit card
+- Admin Dashboard for monitoring
+
 
 
 ## Technologies Used
