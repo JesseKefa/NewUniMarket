@@ -60,7 +60,7 @@ const Login = () => {
       <div className="forgot-password">
         <Link to="/forgot-password">Forgot Password?</Link>
         <Link to="">       </Link>
-        <Link to="/admin-login">Admin Login</Link> {/* Add Admin Login link */}
+        <Link to="/admin-login">Admin Login</Link> 
       </div>
     </div>
   );

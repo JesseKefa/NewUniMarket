@@ -5,23 +5,20 @@ import './AdminPage.css';
 const Sidebar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Clear token and redirect to login
+  const handleSignOut = () => {
     localStorage.removeItem('token');
     navigate('/admin-login');
   };
 
   return (
-    <div className="admin-sidebar">
+    <div className="sidebar">
       <h2>Admin Panel</h2>
-      <ul>
-        <li><Link to="/admin/dashboard">Dashboard</Link></li>
-        <li><Link to="/admin/users">Manage Users</Link></li>
-        <li><Link to="/admin/products">Manage Products</Link></li>
-        <li><Link to="/admin/orders">View Orders</Link></li>
-        <li><Link to="/admin/categories">Manage Categories</Link></li>
-        <li><button onClick={handleLogout} className="sign-out-button">Sign Out</button></li>
-      </ul>
+      <Link to="/admin/dashboard">Dashboard</Link>
+      <Link to="/admin/users">Manage Users</Link>
+      <Link to="/admin/products">Manage Products</Link>
+      <Link to="/admin/orders">View Orders</Link>
+      <Link to="/admin/categories">Manage Categories</Link>
+      <div className="signout" onClick={handleSignOut}>Sign Out</div>
     </div>
   );
 };

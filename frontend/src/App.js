@@ -15,8 +15,6 @@ import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
 import AdminLogin from './components/AdminLogin';
-
-import Sidebar from './components/Sidebar';
 import AdminPage from './components/AdminPage';
 import Dashboard from './components/Dashboard';
 import Users from './components/Users';
@@ -58,13 +56,13 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin/*" element={<AdminPage />}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="users" element={<Users />} />
-              <Route path="products" element={<Products />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="categories" element={<Categories />} />
-            </Route>
+          </Route>
+          <Route path="/admin" element={<AdminPage />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="users" element={<Users />} />
+            <Route path="products" element={<Products />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="categories" element={<Categories />} />
           </Route>
         </Routes>
       </div>

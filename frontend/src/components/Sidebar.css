@@ -1,48 +1,42 @@
 .sidebar {
-  width: 200px;
+  width: 250px;
+  height: 100%;
+  background: #2c3e50;
+  color: white;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
-  background-color: #333;
-  color: white;
-  padding-top: 20px;
 }
 
-.sidebar h2 {
+.sidebar-header {
+  padding: 20px;
   text-align: center;
-  margin-bottom: 20px;
+  background: #1a252f;
 }
 
 .sidebar ul {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
 }
 
 .sidebar ul li {
-  padding: 10px;
-  text-align: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #1a252f;
 }
 
 .sidebar ul li a {
   color: white;
   text-decoration: none;
-}
-
-.sidebar ul li a:hover {
-  background-color: #575757;
+  display: block;
 }
 
 .sign-out-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #ff4b4b;
-  border: none;
+  background: #e74c3c;
   color: white;
+  border: none;
+  padding: 10px;
+  margin: 20px;
   cursor: pointer;
-  margin-top: 20px;
-}
-
-.sign-out-button:hover {
-  background-color: #ff0000;
+  width: calc(100% - 40px);
+  text-align: center;
 }
