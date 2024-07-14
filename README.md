@@ -38,7 +38,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
 
 1. Clone the repository on any command line:
    ```sh
-   git clone https://github.com/JesseKefa/unimarket.git
+   git clone https://github.com/JesseKefa/Uni_Market.git
    ```
 
 2. Install dependencies for both frontend and backend:
