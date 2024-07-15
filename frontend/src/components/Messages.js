@@ -6,6 +6,8 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [receiver, setReceiver] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -42,6 +44,25 @@ const Messages = () => {
     }
   };
 
+  const searchUsers = async (query) => {
+    setSearchQuery(query);
+    if (query) {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`http://localhost:5000/api/users/search?query=${query}`, {
+          headers: {
+            'x-auth-token': token,
+          },
+        });
+        setSearchResults(res.data);
+      } catch (err) {
+        console.error('Error searching users');
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+
   return (
     <div className="messages">
       <h2>Messages</h2>
@@ -56,10 +77,26 @@ const Messages = () => {
       <div className="new-message">
         <input
           type="text"
-          placeholder="Receiver ID"
-          value={receiver}
-          onChange={(e) => setReceiver(e.target.value)}
+          placeholder="Search for users..."
+          value={searchQuery}
+          onChange={(e) => searchUsers(e.target.value)}
         />
+        {searchResults.length > 0 && (
+          <div className="search-results">
+            {searchResults.map((user) => (
+              <div
+                key={user._id}
+                onClick={() => {
+                  setReceiver(user._id);
+                  setSearchQuery(user.username);
+                  setSearchResults([]);
+                }}
+              >
+                {user.username} ({user.email})
+              </div>
+            ))}
+          </div>
+        )}
         <textarea
           placeholder="Type a message..."
           value={newMessage}

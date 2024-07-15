@@ -15,13 +15,15 @@ import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
 import AdminLogin from './components/AdminLogin';
+
+import Sidebar from './components/Sidebar';
 import AdminPage from './components/AdminPage';
 import Dashboard from './components/Dashboard';
-import Users from './components/Users';
-import Products from './components/Products';
+import Users from './components/Users'; // Add this import
+import AdminProducts from './components/AdminProducts'; // Add this import
+import UserProducts from './components/UserProducts'; // Add this import
 import Orders from './components/Orders';
 import Categories from './components/Categories';
-import Messages from './components/Messages';
 
 import './styles.css';
 import './components/Navbar.css';
@@ -46,9 +48,8 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/products" element={<ProductList />} />
+          <Route path="/products" element={<UserProducts />} /> {/* Update */}
           <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/messages" element={<Messages />} />
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
@@ -58,13 +59,13 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-          </Route>
-          <Route path="/admin" element={<AdminPage />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="users" element={<Users />} />
-            <Route path="products" element={<Products />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="categories" element={<Categories />} />
+            <Route path="/admin" element={<AdminPage />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="users" element={<Users />} /> {/* Update */}
+              <Route path="products" element={<AdminProducts />} /> {/* Update */}
+              <Route path="orders" element={<Orders />} />
+              <Route path="categories" element={<Categories />} />
+            </Route>
           </Route>
         </Routes>
       </div>
