@@ -1,47 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Navbar.css';
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const isAuthenticated = !!localStorage.getItem('token');
   const [username, setUsername] = useState(localStorage.getItem('username'));
   const [profileImage, setProfileImage] = useState(localStorage.getItem('profileImage'));
+  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (isAuthenticated) {
-        const token = localStorage.getItem('token');
-        try {
-          const res = await axios.get('http://localhost:5000/api/users/profile', {
-            headers: {
-              'x-auth-token': token,
-            },
-          });
-          const { username, profileImage } = res.data;
-          setUsername(username);
-          setProfileImage(profileImage);
-          localStorage.setItem('username', username);
-          localStorage.setItem('profileImage', profileImage);
-        } catch (err) {
-          console.error('Error fetching profile data', err);
-        }
-      }
-    };
-
-    fetchProfile();
-  }, [isAuthenticated]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('profileImage');
-    setIsAuthenticated(false);
-    setUsername(null);
-    setProfileImage(null);
     navigate('/login');
   };
 
@@ -60,6 +32,29 @@ const Navbar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const res = await fetch('http://localhost:5000/api/users/profile', {
+            headers: {
+              'x-auth-token': token,
+            },
+          });
+          const data = await res.json();
+          setUsername(data.username);
+          setProfileImage(data.profileImage);
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('profileImage', data.profileImage);
+        } catch (err) {
+          console.error('Error fetching profile data', err);
+        }
+      }
+    };
+    fetchProfile();
   }, []);
 
   return (
@@ -83,6 +78,7 @@ const Navbar = () => {
                 alt="Profile"
                 className="profile-icon"
                 onClick={toggleDropdown}
+                id="navbarProfileImage"
               />
               {showDropdown && (
                 <div className="dropdown-menu">

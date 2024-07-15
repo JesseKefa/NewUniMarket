@@ -1,3 +1,4 @@
+// components/AccountSettings.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AccountSettings.css';
@@ -98,10 +99,7 @@ const AccountSettings = () => {
       setMessageType('success');
       setEditMode(false);
       // Update profile picture in Navbar
-      const navbarProfileImage = document.getElementById('navbarProfileImage');
-      if (navbarProfileImage) {
-        navbarProfileImage.src = res.data.profileImage;
-      }
+      document.getElementById('navbarProfileImage').src = res.data.profileImage;
       localStorage.setItem('profileImage', res.data.profileImage);
     } catch (err) {
       setMessage('Error updating profile');
@@ -159,31 +157,31 @@ const AccountSettings = () => {
           <h3>Address</h3>
           <div>
             <label>Country</label>
-            <input type="text" name="address.country" value={formData.address.country} onChange={onChange} />
+            <input type="text" name="country" value={formData.address.country} onChange={onChange} />
           </div>
           <div>
             <label>Full Name</label>
-            <input type="text" name="address.fullName" value={formData.address.fullName} onChange={onChange} />
+            <input type="text" name="fullName" value={formData.address.fullName} onChange={onChange} />
           </div>
           <div>
             <label>Street Address</label>
-            <input type="text" name="address.streetAddress" value={formData.address.streetAddress} onChange={onChange} />
+            <input type="text" name="streetAddress" value={formData.address.streetAddress} onChange={onChange} />
           </div>
           <div>
             <label>Apt / Suite / Other (optional)</label>
-            <input type="text" name="address.aptSuite" value={formData.address.aptSuite} onChange={onChange} />
+            <input type="text" name="aptSuite" value={formData.address.aptSuite} onChange={onChange} />
           </div>
           <div>
             <label>City</label>
-            <input type="text" name="address.city" value={formData.address.city} onChange={onChange} />
+            <input type="text" name="city" value={formData.address.city} onChange={onChange} />
           </div>
           <div>
             <label>Postal Code (optional)</label>
-            <input type="text" name="address.postalCode" value={formData.address.postalCode} onChange={onChange} />
+            <input type="text" name="postalCode" value={formData.address.postalCode} onChange={onChange} />
           </div>
           <div>
             <label>
-              <input type="checkbox" name="address.setAsDefault" checked={formData.address.setAsDefault} onChange={onChange} />
+              <input type="checkbox" name="setAsDefault" checked={formData.address.setAsDefault} onChange={onChange} />
               Set as default
             </label>
           </div>
