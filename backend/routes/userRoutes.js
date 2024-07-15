@@ -1,4 +1,3 @@
-// routes/userRoutes.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -33,7 +32,7 @@ router.post('/register', async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: 360000 },
+      { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
@@ -71,7 +70,7 @@ router.post('/login', async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: 360000 },
+      { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token });

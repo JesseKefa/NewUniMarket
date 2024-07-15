@@ -50,3 +50,15 @@ exports.getCategories = async (req, res) => {
     res.status(500).json({ message: 'Error fetching categories' });
   }
 };
+
+exports.addCategory = async (req, res) => {
+  const { name } = req.body;
+
+  try {
+    const newCategory = new Category({ name });
+    await newCategory.save();
+    res.status(201).json(newCategory);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
