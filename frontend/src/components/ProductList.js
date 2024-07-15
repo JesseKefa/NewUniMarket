@@ -6,7 +6,7 @@ const ProductList = () => {
 
   useEffect(() => {
     // Fetch products from the backend
-    fetch('/api/products')
+    fetch('http://localhost:5000/api/products')
       .then((response) => response.json())
       .then((data) => setProducts(data));
   }, []);
@@ -15,7 +15,7 @@ const ProductList = () => {
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     cartItems.push(product);
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    alert(`${product.name} added to cart!`);
+    alert(`${product.title} added to cart!`);
   };
 
   return (
@@ -23,11 +23,11 @@ const ProductList = () => {
       <h1>Products</h1>
       <div className="product-list">
         {products.map((product) => (
-          <div key={product.id} className="product-item">
-            <img src={product.image} alt={product.name} />
-            <h2>{product.name}</h2>
+          <div key={product._id} className="product-item">
+            <img src={`http://localhost:5000/uploads/${product.photos[0]}`} alt={product.title} className="product-image" />
+            <h2>{product.title}</h2>
             <p>{product.description}</p>
-            <p>${product.price}</p>
+            <p className="product-price">${product.price}</p>
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
