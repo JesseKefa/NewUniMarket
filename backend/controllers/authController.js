@@ -99,3 +99,34 @@ exports.login = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
+exports.refreshToken = async (req, res) => {
+  const { token } = req.body;
+  
+  if (!token) {
+    return res.status(401).json({ msg: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.user.id);
+
+    if (!user) {
+      return res.status(401).json({ msg: 'Invalid token' });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, newToken) => {
+      if (err) throw err;
+      res.json({ token: newToken });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};

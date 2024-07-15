@@ -1,4 +1,3 @@
-// controllers/userController.js
 const User = require('../models/User');
 const multer = require('multer');
 const path = require('path');
