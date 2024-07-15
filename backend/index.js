@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const config = require('config');
 
 dotenv.config();
 
@@ -24,7 +25,6 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-const messageRoutes = require('./routes/messageRoutes');
 
 // Define Routes
 app.use('/api/auth', authRoutes);
@@ -34,10 +34,9 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/messages', messageRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const PORT = process.env.PORT || 5000;
+const PORT = config.get('port') || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

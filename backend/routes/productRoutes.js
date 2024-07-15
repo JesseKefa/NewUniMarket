@@ -22,7 +22,7 @@ const upload = multer({
 }).array('photos', 10); // Maximum of 10 photos
 
 // Add new product
-router.post('/add', authMiddleware, (req, res) => {
+router.post('/', authMiddleware, (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ msg: 'Error uploading file' });
@@ -52,7 +52,7 @@ router.post('/add', authMiddleware, (req, res) => {
   });
 });
 
-// Fetch all products
+// Get all products
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();

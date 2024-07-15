@@ -1,0 +1,8 @@
+{
+    "jwtSecret": "myverysecretkey12345",
+    "mongoURI": "mongodb://localhost:27017/unimarket",
+    "emailUser": "unimarket633@gmail.com",
+    "emailPass": "bcqjuyzwhgifnhml",
+    "otpSecret": "myveryotpsecretkey12345"
+  }
+  

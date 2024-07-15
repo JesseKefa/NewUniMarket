@@ -36,7 +36,7 @@ const AccountSettings = () => {
           },
         });
         setFormData(res.data);
-        setProfileImagePreview(`http://localhost:5000/uploads/${res.data.profileImage}`);
+        setProfileImagePreview(res.data.profileImage);
       } catch (err) {
         setMessage('Error fetching profile');
         setMessageType('error');
@@ -93,12 +93,12 @@ const AccountSettings = () => {
         },
       });
       setFormData(res.data);
-      setProfileImagePreview(`http://localhost:5000/uploads/${res.data.profileImage}`);
+      setProfileImagePreview(res.data.profileImage);
       setMessage('Profile updated successfully');
       setMessageType('success');
       setEditMode(false);
       // Update profile picture in Navbar
-      document.getElementById('navbarProfileImage').src = `http://localhost:5000/uploads/${res.data.profileImage}`;
+      document.getElementById('navbarProfileImage').src = res.data.profileImage;
       localStorage.setItem('profileImage', res.data.profileImage);
     } catch (err) {
       setMessage('Error updating profile');
