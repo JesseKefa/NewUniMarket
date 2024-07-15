@@ -23,31 +23,32 @@ const ShopCreation = ({ setShopCreated }) => {
   };
 
   return (
-    <div className="shop-creation">
-      <h2>Create Your Shop</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Shop Name</label>
-          <input
-            type="text"
-            placeholder="Enter your shop name"
-            value={shopName}
-            onChange={(e) => setShopName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Shop Description</label>
-          <textarea
-            placeholder="Describe your shop"
-            value={shopDescription}
-            onChange={(e) => setShopDescription(e.target.value)}
-            required
-          ></textarea>
-        </div>
-        <button type="submit">Create Shop</button>
-      </form>
-    </div>
+    <div class="shop-creation">
+  <h2>Create Your Shop</h2>
+  <div class="form-group">
+    <label for="shop-name">Shop Name</label>
+    <input type="text" id="shop-name" name="shop-name"/>
+  </div>
+  <div class="form-group">
+    <label for="shop-description">Description</label>
+    <textarea id="shop-description" name="shop-description"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="shop-owner">Owner Name</label>
+    <input
+     type="text" id="shop-owner" name="shop-owner"/>
+  </div>
+  
+  <div class="error-message" style="display:none;">An error occurred. Please try again.</div>
+  
+  <div class="success-message" style="display:none;">Shop created successfully!</div>
+ 
+  <div class="loading-spinner" style="display:none;">
+    <div></div><div></div><div></div>
+  </div>
+  <button type="submit">Create Shop</button>
+</div>
+
   );
 };
 
