@@ -24,6 +24,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 
 // Define Routes
 app.use('/api/auth', authRoutes);
@@ -33,6 +34,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/messages', messageRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

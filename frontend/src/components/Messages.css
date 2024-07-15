@@ -1,0 +1,39 @@
+.messages {
+    padding: 20px;
+  }
+  
+  .messages-list {
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+  }
+  
+  .message {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .new-message {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .new-message input,
+  .new-message textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .new-message button {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

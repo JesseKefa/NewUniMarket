@@ -21,6 +21,7 @@ import Users from './components/Users';
 import Products from './components/Products';
 import Orders from './components/Orders';
 import Categories from './components/Categories';
+import Messages from './components/Messages';
 
 import './styles.css';
 import './components/Navbar.css';
@@ -47,6 +48,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/messages" element={<Messages />} />
 
           {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
