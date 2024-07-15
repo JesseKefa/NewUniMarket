@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const authMiddleware = require('../middleware/authMiddleware');
 
+// Admin routes that require authentication
 router.get('/dashboard-data', authMiddleware, adminController.getDashboardData);
 router.get('/users', authMiddleware, adminController.getUsers);
 router.get('/products', authMiddleware, adminController.getProducts);

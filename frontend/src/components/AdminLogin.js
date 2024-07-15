@@ -1,48 +1,54 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import './AdminPage.css';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = { email, password };
-
     try {
-      const res = await axios.post('http://localhost:5000/api/admin/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/admin'); // Navigate to admin dashboard or desired page after login
+      const response = await axios.post('/api/admin/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      navigate('/admin/dashboard');
     } catch (err) {
-      console.error('Error logging in admin:', err);
-      setMessage('Login failed');
+      setError('Invalid credentials');
     }
   };
 
   return (
-    <div>
-      <h2>Admin Login</h2>
-      <form onSubmit={onSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+    <div className="admin-login-container">
+      <form onSubmit={handleSubmit} className="admin-login-form">
+        <h2>Admin Login</h2>
+        {error && <p className="error">{error}</p>}
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit">Login</button>
+        <div className="links">
+          <Link to="/register">Register</Link>
+          <Link to="/login">User Login</Link>
+        </div>
       </form>
-      {message && <p style={{ color: 'red' }}>{message}</p>}
     </div>
   );
 };

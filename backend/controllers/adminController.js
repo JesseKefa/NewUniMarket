@@ -1,13 +1,15 @@
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const Category = require('../models/Category');
 
 exports.getDashboardData = async (req, res) => {
   try {
     const users = await User.find();
     const products = await Product.find();
     const orders = await Order.find().populate('user');
-    res.json({ users, products, orders });
+    const categories = await Category.find();
+    res.json({ users, products, orders, categories });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching dashboard data' });
   }

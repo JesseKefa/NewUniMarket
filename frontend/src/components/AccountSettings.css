@@ -1,74 +1,75 @@
-.account-settings-container {
-  max-width: 800px;
+/* Add this to your AccountSettings.css */
+
+.account-settings {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
 }
 
-.account-settings-container h1 {
+.account-settings h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
-.profile-picture-section,
-.name-section,
-.gender-section,
-.about-section,
-.address-section {
-  margin-bottom: 20px;
+form div {
+  margin-bottom: 1rem;
 }
 
-label {
+form label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-input[type="file"] {
-  display: block;
-}
-
-input[type="text"],
-select,
-textarea {
+form input[type="text"],
+form input[type="email"],
+form input[type="date"],
+form input[type="file"],
+form textarea,
+form select {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-textarea {
-  resize: vertical;
+form input[type="radio"] {
+  margin-right: 0.5rem;
 }
 
-button[type="submit"] {
-  display: block;
-  width: 100%;
-  padding: 10px;
+.profile-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-picture img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.profile-info p {
+  margin: 0.5rem 0;
+}
+
+button {
+  padding: 0.5rem 1rem;
   background-color: #007bff;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+button:hover {
   background-color: #0056b3;
 }
 
-.gender-section div {
-  display: flex;
-  gap: 10px;
+.success-message {
+  color: green;
 }
 
-.gender-section label {
-  font-weight: normal;
-}
-
-input[type="radio"] {
-  margin-right: 5px;
+.error-message {
+  color: red;
 }

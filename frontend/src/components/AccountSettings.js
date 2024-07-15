@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './AccountSettings.css';
 
 const AccountSettings = () => {
   const [formData, setFormData] = useState({
@@ -17,8 +18,10 @@ const AccountSettings = () => {
   });
 
   const [profileImage, setProfileImage] = useState(null);
+  const [profileImagePreview, setProfileImagePreview] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -30,6 +33,7 @@ const AccountSettings = () => {
           },
         });
         setFormData(res.data);
+        setProfileImagePreview(res.data.profileImage);
       } catch (err) {
         setMessage('Error fetching profile');
         setMessageType('error');
@@ -58,7 +62,9 @@ const AccountSettings = () => {
   };
 
   const onFileChange = (e) => {
-    setProfileImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setProfileImage(file);
+    setProfileImagePreview(URL.createObjectURL(file));
   };
 
   const onSubmit = async (e) => {
@@ -77,14 +83,20 @@ const AccountSettings = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/users/profile', form, {
+      const res = await axios.put('http://localhost:5000/api/users/profile', form, {
         headers: {
           'x-auth-token': token,
           'Content-Type': 'multipart/form-data',
         },
       });
+      setFormData(res.data);
+      setProfileImagePreview(res.data.profileImage);
       setMessage('Profile updated successfully');
       setMessageType('success');
+      setEditMode(false);
+      // Update profile picture in Navbar
+      document.getElementById('navbarProfileImage').src = res.data.profileImage;
+      localStorage.setItem('profileImage', res.data.profileImage);
     } catch (err) {
       setMessage('Error updating profile');
       setMessageType('error');
@@ -92,59 +104,108 @@ const AccountSettings = () => {
   };
 
   return (
-    <div>
-      <h1>Account Settings</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>Profile Picture</label>
-          <input type="file" onChange={onFileChange} />
-        </div>
-        <div>
-          <label>Gender</label>
-          <input type="radio" name="gender" value="Female" checked={formData.gender === 'Female'} onChange={onChange} /> Female
-          <input type="radio" name="gender" value="Male" checked={formData.gender === 'Male'} onChange={onChange} /> Male
-          <input type="radio" name="gender" value="Rather not say" checked={formData.gender === 'Rather not say'} onChange={onChange} /> Rather not say
-          <input type="radio" name="gender" value="Custom" checked={formData.gender === 'Custom'} onChange={onChange} /> Custom
-        </div>
-        <div>
-          <label>About</label>
-          <textarea name="about" value={formData.about} onChange={onChange}></textarea>
-        </div>
-        <div>
-          <label>Address</label>
+    <div className="account-settings">
+      <h2>Account Settings</h2>
+      {editMode ? (
+        <form onSubmit={onSubmit}>
+          <div>
+            <label>Profile Picture</label>
+            <input type="file" onChange={onFileChange} />
+            {profileImagePreview && <img src={profileImagePreview} alt="Profile Preview" className="profile-preview" />}
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="email" name="email" value={formData.email} onChange={onChange} disabled />
+          </div>
+          <div>
+            <label>Username</label>
+            <input type="text" name="username" value={formData.username} onChange={onChange} />
+          </div>
+          <div>
+            <label>Date of Birth</label>
+            <input type="date" name="dob" value={formData.dob} onChange={onChange} />
+          </div>
+          <div>
+            <label>Gender</label>
+            <div>
+              <label>
+                <input type="radio" name="gender" value="Male" checked={formData.gender === 'Male'} onChange={onChange} />
+                Male
+              </label>
+              <label>
+                <input type="radio" name="gender" value="Female" checked={formData.gender === 'Female'} onChange={onChange} />
+                Female
+              </label>
+              <label>
+                <input type="radio" name="gender" value="Rather not say" checked={formData.gender === 'Rather not say'} onChange={onChange} />
+                Rather not say
+              </label>
+              <label>
+                <input type="radio" name="gender" value="Custom" checked={formData.gender === 'Custom'} onChange={onChange} />
+                Custom
+              </label>
+            </div>
+          </div>
+          <div>
+            <label>About</label>
+            <textarea name="about" value={formData.about} onChange={onChange} />
+          </div>
+          <h3>Address</h3>
           <div>
             <label>Country</label>
-            <select name="address.country" value={formData.address.country} onChange={onChange}>
-              <option value="Kenya">Kenya</option>
-              {/* Add more options as needed */}
-            </select>
+            <input type="text" name="country" value={formData.address.country} onChange={onChange} />
           </div>
           <div>
             <label>Full Name</label>
-            <input type="text" name="address.fullName" value={formData.address.fullName} onChange={onChange} />
+            <input type="text" name="fullName" value={formData.address.fullName} onChange={onChange} />
           </div>
           <div>
             <label>Street Address</label>
-            <input type="text" name="address.streetAddress" value={formData.address.streetAddress} onChange={onChange} />
+            <input type="text" name="streetAddress" value={formData.address.streetAddress} onChange={onChange} />
           </div>
           <div>
             <label>Apt / Suite / Other (optional)</label>
-            <input type="text" name="address.aptSuite" value={formData.address.aptSuite} onChange={onChange} />
+            <input type="text" name="aptSuite" value={formData.address.aptSuite} onChange={onChange} />
           </div>
           <div>
             <label>City</label>
-            <input type="text" name="address.city" value={formData.address.city} onChange={onChange} />
+            <input type="text" name="city" value={formData.address.city} onChange={onChange} />
           </div>
           <div>
             <label>Postal Code (optional)</label>
-            <input type="text" name="address.postalCode" value={formData.address.postalCode} onChange={onChange} />
+            <input type="text" name="postalCode" value={formData.address.postalCode} onChange={onChange} />
           </div>
           <div>
-            <input type="checkbox" name="address.setAsDefault" checked={formData.address.setAsDefault} onChange={onChange} /> Set as default
+            <label>
+              <input type="checkbox" name="setAsDefault" checked={formData.address.setAsDefault} onChange={onChange} />
+              Set as default
+            </label>
           </div>
+          <button type="submit">Save Changes</button>
+        </form>
+      ) : (
+        <div className="profile-display">
+          <div className="profile-picture">
+            <img src={profileImagePreview || '/default-profile.png'} alt="Profile" />
+          </div>
+          <div className="profile-info">
+            <p>Email: {formData.email}</p>
+            <p>Username: {formData.username}</p>
+            <p>Date of Birth: {formData.dob}</p>
+            <p>Gender: {formData.gender}</p>
+            <p>About: {formData.about}</p>
+            <h3>Address</h3>
+            <p>Country: {formData.address.country}</p>
+            <p>Full Name: {formData.address.fullName}</p>
+            <p>Street Address: {formData.address.streetAddress}</p>
+            <p>Apt / Suite / Other: {formData.address.aptSuite}</p>
+            <p>City: {formData.address.city}</p>
+            <p>Postal Code: {formData.address.postalCode}</p>
+            <p>Set as Default: {formData.address.setAsDefault ? 'Yes' : 'No'}</p>
+          </div>
+          <button onClick={() => setEditMode(true)}>Edit Profile</button>
         </div>
-        <button type="submit">Save Changes</button>
-      </form>
+      )}
       {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );

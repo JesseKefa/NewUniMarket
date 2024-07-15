@@ -1,19 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Navbar.css';
 
 const Navbar = () => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  const username = localStorage.getItem('username');
-  const profileImage = localStorage.getItem('profileImage');
-  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [username, setUsername] = useState(localStorage.getItem('username'));
+  const [profileImage, setProfileImage] = useState(localStorage.getItem('profileImage'));
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (isAuthenticated) {
+        const token = localStorage.getItem('token');
+        try {
+          const res = await axios.get('http://localhost:5000/api/users/profile', {
+            headers: {
+              'x-auth-token': token,
+            },
+          });
+          const { username, profileImage } = res.data;
+          setUsername(username);
+          setProfileImage(profileImage);
+          localStorage.setItem('username', username);
+          localStorage.setItem('profileImage', profileImage);
+        } catch (err) {
+          console.error('Error fetching profile data', err);
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('profileImage');
+    setIsAuthenticated(false);
+    setUsername(null);
+    setProfileImage(null);
     navigate('/login');
   };
 
