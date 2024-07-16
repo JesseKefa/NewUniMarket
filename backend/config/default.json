@@ -3,6 +3,7 @@
     "mongoURI": "mongodb://localhost:27017/unimarket",
     "emailUser": "unimarket633@gmail.com",
     "emailPass": "bcqjuyzwhgifnhml",
-    "otpSecret": "myveryotpsecretkey12345"
+    "otpSecret": "myveryotpsecretkey12345",
+    "port": 5000
   }
   
