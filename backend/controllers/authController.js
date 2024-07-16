@@ -57,7 +57,7 @@ exports.verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    res.json({ msg: 'Email verified successfully. You can now log in.' });
+    res.json({ msg: 'Email verified successfully, please reset your password' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
@@ -92,7 +92,7 @@ exports.login = async (req, res) => {
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, username: user.username });
+      res.json({ token });
     });
   } catch (err) {
     console.error(err);
@@ -100,29 +100,50 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.getProfile = async (req, res) => {
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    let user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(400).json({ message: 'User not found' });
     }
-    res.json(user);
+
+    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+    await sendEmail({
+      to: user.email,
+      subject: 'Reset your password',
+      text: `Please reset your password by clicking the link: ${resetLink}`,
+    });
+
+    res.status(200).json({ message: 'Password reset email sent' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-exports.updateProfile = async (req, res) => {
-  const { username, phoneNumber, dob } = req.body;
+exports.resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
 
   try {
-    const updatedFields = { username, phoneNumber, dob };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid token' });
+    }
 
-    const user = await User.findByIdAndUpdate(req.user.id, { $set: updatedFields }, { new: true });
-    res.json(user);
-  } catch (error) {
-    console.error(error.message);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.isVerified = true; 
+    await user.save();
+
+    res.status(200).json({ message: 'Password reset successfully. You can now log in with your new password.' });
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server error');
   }
 };
