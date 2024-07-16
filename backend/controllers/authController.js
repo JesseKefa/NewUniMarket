@@ -57,7 +57,10 @@ exports.verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    res.status(200).json({ msg: 'Email verified successfully, you can now login' });
+    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+    res.status(200).json({ msg: 'Email verified successfully', resetLink });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });

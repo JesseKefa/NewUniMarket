@@ -12,6 +12,30 @@
   margin-bottom: 20px;
 }
 
+.account-settings .profile-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.account-settings .profile-display .profile-picture img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.account-settings .profile-display .profile-info {
+  width: 100%;
+  text-align: left;
+}
+
+.account-settings .profile-display .profile-info p {
+  margin: 5px 0;
+}
+
 .account-settings form {
   display: flex;
   flex-direction: column;
@@ -47,29 +71,6 @@
   object-fit: cover;
   border-radius: 50%;
   margin-top: 10px;
-}
-
-.account-settings .profile-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.account-settings .profile-display .profile-picture img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-
-.account-settings .profile-display .profile-info {
-  width: 100%;
-  text-align: left;
-}
-
-.account-settings .profile-display .profile-info p {
-  margin: 5px 0;
 }
 
 .account-settings button {

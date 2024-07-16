@@ -3,13 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ResetPassword = () => {
+  const { token } = useParams();
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
-  const { token } = useParams();
   const navigate = useNavigate();
-
-  const onChange = (e) => setPassword(e.target.value);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +17,7 @@ const ResetPassword = () => {
       setMessageType('success');
       setTimeout(() => {
         navigate('/login');
-      }, 2000); // Delay the navigation to show the success message
+      }, 2000); // Redirect to login after 2 seconds
     } catch (err) {
       setMessage(err.response.data.message);
       setMessageType('error');
@@ -32,9 +30,8 @@ const ResetPassword = () => {
       <form onSubmit={onSubmit}>
         <input
           type="password"
-          name="password"
           value={password}
-          onChange={onChange}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="New Password"
           required
         />
