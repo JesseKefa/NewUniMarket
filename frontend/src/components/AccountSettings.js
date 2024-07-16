@@ -101,6 +101,12 @@ const AccountSettings = () => {
       // Update profile picture in Navbar
       document.getElementById('navbarProfileImage').src = res.data.profileImage;
       localStorage.setItem('profileImage', res.data.profileImage);
+
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        setMessage('');
+        setMessageType('');
+      }, 3000);
     } catch (err) {
       console.error('Error updating profile', err);  // Log the error to the console
       setMessage('Error updating profile');

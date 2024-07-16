@@ -1,43 +1,44 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useParams, useHistory } from 'react-router-dom';
 
 const ResetPassword = () => {
   const { token } = useParams();
+  const history = useHistory();
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('');
-  const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, { password });
+      const res = await axios.post(`http://localhost:5000/api/auth/reset/${token}`, { password });
       setMessage(res.data.message);
-      setMessageType('success');
+      // Redirect to login page after successful password reset
       setTimeout(() => {
-        navigate('/login');
-      }, 2000); // Redirect to login after 2 seconds
+        history.push('/login');
+      }, 3000);
     } catch (err) {
-      setMessage(err.response.data.message);
-      setMessageType('error');
+      console.error('Error resetting password:', err.response.data);
+      setMessage('Error resetting password');
     }
   };
 
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="New Password"
-          required
-        />
+    <div className="reset-password">
+      <h2>Reset Password</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>New Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
         <button type="submit">Reset Password</button>
       </form>
-      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      {message && <p>{message}</p>}
     </div>
   );
 };
