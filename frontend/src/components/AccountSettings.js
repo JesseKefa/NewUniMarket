@@ -38,6 +38,7 @@ const AccountSettings = () => {
         setFormData(res.data);
         setProfileImagePreview(res.data.profileImage);
       } catch (err) {
+        console.error('Error fetching profile', err);  // Log the error to the console
         setMessage('Error fetching profile');
         setMessageType('error');
       }
@@ -101,6 +102,7 @@ const AccountSettings = () => {
       document.getElementById('navbarProfileImage').src = res.data.profileImage;
       localStorage.setItem('profileImage', res.data.profileImage);
     } catch (err) {
+      console.error('Error updating profile', err);  // Log the error to the console
       setMessage('Error updating profile');
       setMessageType('error');
     }
@@ -194,7 +196,7 @@ const AccountSettings = () => {
           <div className="profile-info">
             <p>Email: {formData.email}</p>
             <p>Username: {formData.username}</p>
-            <p>Date of Birth: {formData.dob}</p>
+            <p>Date of Birth: {new Date(formData.dob).toDateString()}</p>
             <p>Gender: {formData.gender}</p>
             <p>About: {formData.about}</p>
             <h3>Address</h3>

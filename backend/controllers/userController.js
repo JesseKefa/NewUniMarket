@@ -25,7 +25,7 @@ const getUserProfile = async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    console.error(err.message);
+    console.error('Error fetching user profile', err);
     res.status(500).send('Server error');
   }
 };
@@ -66,6 +66,7 @@ const updateUserProfile = (req, res) => {
     }
   });
 };
+
 
 module.exports = {
   getUserProfile,
