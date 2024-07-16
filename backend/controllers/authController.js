@@ -59,12 +59,13 @@ exports.verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    res.status(200).json({ msg: 'Email verified successfully' });
+    res.redirect('/login'); // Redirect to login page
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
 
 // Login User
 exports.login = async (req, res) => {

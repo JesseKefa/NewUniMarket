@@ -19,7 +19,7 @@ const ProductManager = () => {
   const categories = [
     'Electronics',
     'Fashion',
-    'Home & Garden',
+    'Home',
     'Sports',
     'Toys & Hobbies',
     'Health & Beauty',
@@ -75,47 +75,49 @@ const ProductManager = () => {
   };
 
   return (
-    <div className="product-manager">
-      <h2>Add a New Product</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>Category</label>
-          <select name="category" value={formData.category} onChange={onChange} required>
-            <option value="">Select Category</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Title</label>
-          <input type="text" name="title" value={formData.title} onChange={onChange} required />
-        </div>
-        <div>
-          <label>Description</label>
-          <textarea name="description" value={formData.description} onChange={onChange} required />
-        </div>
-        <div>
-          <label>Price (KES)</label>
-          <input type="number" name="price" value={formData.price} onChange={onChange} required />
-        </div>
-        <div>
-          <label>Quantity</label>
-          <div className="quantity-control">
-            <button type="button" onClick={decrementQuantity}>-</button>
-            <input type="number" name="quantity" value={formData.quantity} onChange={onChange} required />
-            <button type="button" onClick={incrementQuantity}>+</button>
+    <div className="product-manager-container">
+      <div className="product-manager">
+        <h2>Add a New Product</h2>
+        <form onSubmit={onSubmit}>
+          <div>
+            <label>Category</label>
+            <select name="category" value={formData.category} onChange={onChange} required>
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </div>
-        </div>
-        <div>
-          <label>Add Photos</label>
-          <input type="file" name="images" onChange={onChange} multiple />
-        </div>
-        <button type="submit">Add Product</button>
-      </form>
-      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+          <div>
+            <label>Title</label>
+            <input type="text" name="title" value={formData.title} onChange={onChange} required />
+          </div>
+          <div>
+            <label>Description</label>
+            <textarea name="description" value={formData.description} onChange={onChange} required />
+          </div>
+          <div>
+            <label>Price (KES)</label>
+            <input type="number" name="price" value={formData.price} onChange={onChange} required />
+          </div>
+          <div>
+            <label>Quantity</label>
+            <div className="quantity-control">
+              <button type="button" onClick={decrementQuantity}>-</button>
+              <input type="number" name="quantity" value={formData.quantity} onChange={onChange} required />
+              <button type="button" onClick={incrementQuantity}>+</button>
+            </div>
+          </div>
+          <div>
+            <label>Add Photos</label>
+            <input type="file" name="images" onChange={onChange} multiple />
+          </div>
+          <button type="submit">Add Product</button>
+        </form>
+        {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      </div>
     </div>
   );
 };

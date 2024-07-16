@@ -18,11 +18,13 @@ import AdminLogin from './components/AdminLogin';
 import Sidebar from './components/Sidebar';
 import AdminPage from './components/AdminPage';
 import Dashboard from './components/Dashboard';
-import Users from './components/Users'; 
+import Users from './components/Users';
 import AdminProducts from './components/AdminProducts';
-import UserProducts from './components/UserProducts'; 
+import UserProducts from './components/UserProducts';
 import Orders from './components/Orders';
 import Categories from './components/Categories';
+import Messages from './components/Messages';
+import ProductDetails from './components/ProductDetails'; // Import the new component
 
 import './styles.css';
 import './components/Navbar.css';
@@ -33,8 +35,6 @@ import './components/ProductList.css';
 import './components/ProductManager.css';
 import './components/AdminPage.css';
 import './AuthStyles.css';
-
-
 
 function App() {
   const isAdminRoute = window.location.pathname.startsWith('/admin');
@@ -51,6 +51,7 @@ function App() {
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<UserProducts />} />
+          <Route path="/products/:productId" element={<ProductDetails />} /> {/* New Route */}
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route element={<PrivateRoute />}>
             <Route path="/welcome" element={<Welcome />} />
@@ -59,6 +60,7 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/messages/:userId" element={<Messages />} /> {/* New Route */}
             <Route path="/admin" element={<AdminPage />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />
