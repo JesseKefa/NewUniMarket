@@ -1,33 +1,32 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './ResetPassword.css'; // Assuming you have a CSS file for styling
+import { useNavigate, useParams } from 'react-router-dom';
+import './AuthStyles.css';
 
 const ResetPassword = () => {
-  const { token } = useParams();
-  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const navigate = useNavigate();
+  const { token } = useParams();
 
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`http://localhost:5000/api/auth/reset/${token}`, { password });
-      setMessage(res.data.message);
-      // Redirect to login page after successful password reset
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
+      setMessage('Password reset successfully');
+      setMessageType('success');
+      setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
     } catch (err) {
-      console.error('Error resetting password:', err.response.data);
       setMessage('Error resetting password');
+      setMessageType('error');
     }
   };
 
   return (
-    <div className="reset-password">
+    <div className="auth-container">
       <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <div>
           <label>New Password</label>
           <input
@@ -39,7 +38,7 @@ const ResetPassword = () => {
         </div>
         <button type="submit">Reset Password</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

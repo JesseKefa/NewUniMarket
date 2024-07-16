@@ -1,11 +1,10 @@
-const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
-const config = require('config');
+const User = require('../models/User');
 
-// Registration
+// Register User
 exports.register = async (req, res) => {
   const { email, password, phoneNumber, username, dob } = req.body;
 
@@ -47,7 +46,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Email Verification
+// Verify Email
 exports.verifyEmail = async (req, res) => {
   try {
     const user = await User.findOne({ verificationToken: req.params.token });
@@ -60,17 +59,14 @@ exports.verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    const resetToken = jwt.sign({ userId: user._id }, config.get('jwtSecret'));
-    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
-
-    res.status(200).json({ msg: 'Email verified successfully', resetLink });
+    res.status(200).json({ msg: 'Email verified successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 };
 
-// Login
+// Login User
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -97,10 +93,10 @@ exports.login = async (req, res) => {
       },
     };
 
-    // Generate a token without expiration time
-    const token = jwt.sign(payload, config.get('jwtSecret'));
-
-    res.json({ token });
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+      if (err) throw err;
+      res.json({ token });
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
@@ -117,7 +113,7 @@ exports.forgotPassword = async (req, res) => {
       return res.status(400).json({ message: 'User not found' });
     }
 
-    const resetToken = jwt.sign({ userId: user._id }, config.get('jwtSecret'));
+    const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
 
     await sendEmail({
@@ -151,8 +147,7 @@ exports.resetPassword = async (req, res) => {
 
     res.status(200).json({ message: 'Password reset successfully. You can now log in with your new password.' });
   } catch (err) {
-    console.error('Error in resetPassword:', err.message);
+    console.error(err.message);
     res.status(500).send('Server error');
   }
 };
-
