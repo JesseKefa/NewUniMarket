@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import './ResetPassword.css'; // Assuming you have a CSS file for styling
 
 const ResetPassword = () => {
   const { token } = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
@@ -15,7 +16,7 @@ const ResetPassword = () => {
       setMessage(res.data.message);
       // Redirect to login page after successful password reset
       setTimeout(() => {
-        history.push('/login');
+        navigate('/login');
       }, 3000);
     } catch (err) {
       console.error('Error resetting password:', err.response.data);
