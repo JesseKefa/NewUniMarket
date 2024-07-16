@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './AuthStyles.css';
+import '../AuthStyles.css';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -25,20 +25,22 @@ const ResetPassword = () => {
 
   return (
     <div className="auth-container">
-      <h2>Reset Password</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>New Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
-      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      <div className="auth-form">
+        <h2>Reset Password</h2>
+        <form onSubmit={onSubmit}>
+          <div>
+            <label>New Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Reset Password</button>
+        </form>
+        {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      </div>
     </div>
   );
 };

@@ -32,6 +32,9 @@ import './components/Checkout.css';
 import './components/ProductList.css';
 import './components/ProductManager.css';
 import './components/AdminPage.css';
+import './AuthStyles.css';
+
+
 
 function App() {
   const isAdminRoute = window.location.pathname.startsWith('/admin');

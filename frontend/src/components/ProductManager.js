@@ -1,139 +1,121 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './ProductManager.css';
 
 const ProductManager = () => {
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('physical');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [file, setFile] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    category: '',
+    title: '',
+    description: '',
+    price: '',
+    quantity: 1,
+    images: [],
+  });
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+
+  const categories = [
+    'Electronics',
+    'Fashion',
+    'Home & Garden',
+    'Sports',
+    'Toys & Hobbies',
+    'Health & Beauty',
+    // Add more categories as needed
+  ];
+
+  const onChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'images') {
+      setSelectedImages([...files]);
+    } else {
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('category', category);
-    formData.append('type', type);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('quantity', quantity);
-    formData.append('file', file);
+  const incrementQuantity = () => {
+    setFormData((prevData) => ({ ...prevData, quantity: prevData.quantity + 1 }));
+  };
 
-    setLoading(true);
-    setError('');
-    setSuccess(false);
+  const decrementQuantity = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      quantity: prevData.quantity > 1 ? prevData.quantity - 1 : 1,
+    }));
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    form.append('category', formData.category);
+    form.append('title', formData.title);
+    form.append('description', formData.description);
+    form.append('price', formData.price);
+    form.append('quantity', formData.quantity);
+    selectedImages.forEach((image, index) => {
+      form.append(`images[${index}]`, image);
+    });
 
     try {
-      const res = await axios.post('http://localhost:5000/api/products', formData, {
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/products', form, {
         headers: {
+          'x-auth-token': token,
           'Content-Type': 'multipart/form-data',
         },
       });
-      setSuccess(true);
-      // Reset form fields
-      setCategory('');
-      setType('physical');
-      setTitle('');
-      setDescription('');
-      setPrice('');
-      setQuantity('');
-      setFile(null);
+      setMessage('Product added successfully');
+      setMessageType('success');
     } catch (err) {
-      setError('Error adding product');
-    } finally {
-      setLoading(false);
+      setMessage('Error adding product');
+      setMessageType('error');
     }
   };
 
   return (
     <div className="product-manager">
       <h2>Add a New Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="step">
-          <h3>Product Details</h3>
-          <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          />
-          <div>
-            <label>
-              <input
-                type="radio"
-                value="physical"
-                checked={type === 'physical'}
-                onChange={(e) => setType(e.target.value)}
-              />
-              Physical Item
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="digital"
-                checked={type === 'digital'}
-                onChange={(e) => setType(e.target.value)}
-              />
-              Digital File
-            </label>
+      <form onSubmit={onSubmit}>
+        <div>
+          <label>Category</label>
+          <select name="category" value={formData.category} onChange={onChange} required>
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label>Title</label>
+          <input type="text" name="title" value={formData.title} onChange={onChange} required />
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea name="description" value={formData.description} onChange={onChange} required />
+        </div>
+        <div>
+          <label>Price (KES)</label>
+          <input type="number" name="price" value={formData.price} onChange={onChange} required />
+        </div>
+        <div>
+          <label>Quantity</label>
+          <div className="quantity-control">
+            <button type="button" onClick={decrementQuantity}>-</button>
+            <input type="number" name="quantity" value={formData.quantity} onChange={onChange} required />
+            <button type="button" onClick={incrementQuantity}>+</button>
           </div>
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          ></textarea>
         </div>
-        <div className="step">
-          <h3>Set Your Pricing</h3>
-          <input
-            type="text"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          />
-        </div>
-        <div className="step">
-          <h3>Add Photos</h3>
-          <input type="file" onChange={handleFileChange} required />
-        </div>
-        <div className="error-message" style={{ display: error ? 'block' : 'none' }}>
-          {error}
-        </div>
-        <div className="success-message" style={{ display: success ? 'block' : 'none' }}>
-          Product added successfully!
-        </div>
-        <div className="loading-spinner" style={{ display: loading ? 'flex' : 'none' }}>
-          <div></div><div></div><div></div>
+        <div>
+          <label>Add Photos</label>
+          <input type="file" name="images" onChange={onChange} multiple />
         </div>
         <button type="submit">Add Product</button>
       </form>
+      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './AuthStyles.css';
+import '../AuthStyles.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -11,29 +11,32 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/forgot-password', { email });
-      setMessage(res.data.message);
+      setMessage('Password reset email sent');
       setMessageType('success');
     } catch (err) {
-      setMessage(err.response.data.message);
+      setMessage('Error sending password reset email');
       setMessageType('error');
     }
   };
 
   return (
-    <div className="forgot-password-container">
-      <h1>Forgot Password</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          required
-        />
-        <button type="submit">Submit</button>
-      </form>
-      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+    <div className="auth-container">
+      <div className="auth-form">
+        <h2>Forgot Password</h2>
+        <form onSubmit={onSubmit}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Send Reset Link</button>
+        </form>
+        {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
+      </div>
     </div>
   );
 };
