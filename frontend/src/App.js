@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
 import ResetPassword from './components/ResetPassword';
-import VerifyOTP from './components/VerifyOTP';
+import VerifyEmail from './components/VerifyEmail';
 import LandingPage from './components/LandingPage';
 import Welcome from './components/Welcome';
 import ForgotPassword from './components/ForgotPassword';
@@ -15,13 +15,12 @@ import Checkout from './components/Checkout';
 import ProductList from './components/ProductList';
 import ProductManager from './components/ProductManager';
 import AdminLogin from './components/AdminLogin';
-
 import Sidebar from './components/Sidebar';
 import AdminPage from './components/AdminPage';
 import Dashboard from './components/Dashboard';
-import Users from './components/Users'; // Add this import
-import AdminProducts from './components/AdminProducts'; // Add this import
-import UserProducts from './components/UserProducts'; // Add this import
+import Users from './components/Users'; 
+import AdminProducts from './components/AdminProducts';
+import UserProducts from './components/UserProducts'; 
 import Orders from './components/Orders';
 import Categories from './components/Categories';
 
@@ -46,12 +45,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/products" element={<UserProducts />} /> {/* Update */}
+          <Route path="/products" element={<UserProducts />} />
           <Route path="/admin-login" element={<AdminLogin />} />
-
-          {/* Protected Routes */}
           <Route element={<PrivateRoute />}>
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/favorites" element={<div>Favorites</div>} />
@@ -61,8 +58,8 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/admin" element={<AdminPage />}>
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="users" element={<Users />} /> {/* Update */}
-              <Route path="products" element={<AdminProducts />} /> {/* Update */}
+              <Route path="users" element={<Users />} />
+              <Route path="products" element={<AdminProducts />} />
               <Route path="orders" element={<Orders />} />
               <Route path="categories" element={<Categories />} />
             </Route>

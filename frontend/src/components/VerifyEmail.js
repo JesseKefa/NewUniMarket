@@ -1,44 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const VerifyEmail = () => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
+  const { token } = useParams();
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
+  const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/verify-email', { email, otp });
-      setMessage(res.data.message);
-    } catch (err) {
-      setMessage(err.response.data.message);
-    }
-  };
+  useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/auth/verify-email/${token}`);
+        setMessage(res.data.msg);
+        setMessageType('success');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000); // Redirect to login after 2 seconds
+      } catch (err) {
+        setMessage(err.response?.data?.msg || 'Email verification failed');
+        setMessageType('error');
+      }
+    };
+    verifyEmail();
+  }, [token, navigate]);
 
   return (
     <div>
-      <h1>Verify Email</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="text"
-          name="otp"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          placeholder="OTP"
-          required
-        />
-        <button type="submit">Verify Email</button>
-      </form>
-      {message && <p className={message.includes('successfully') ? 'success-message' : 'error-message'}>{message}</p>}
+      <h1>Email Verification</h1>
+      {message && <p className={messageType === 'success' ? 'success-message' : 'error-message'}>{message}</p>}
     </div>
   );
 };

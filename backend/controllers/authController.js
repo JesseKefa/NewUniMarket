@@ -57,7 +57,7 @@ exports.verifyEmail = async (req, res) => {
     user.verificationToken = undefined;
     await user.save();
 
-    res.json({ msg: 'Email verified successfully, please reset your password' });
+    res.status(200).json({ msg: 'Email verified successfully, you can now login' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
@@ -138,7 +138,6 @@ exports.resetPassword = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
-    user.isVerified = true; 
     await user.save();
 
     res.status(200).json({ message: 'Password reset successfully. You can now log in with your new password.' });
