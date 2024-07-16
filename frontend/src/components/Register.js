@@ -24,11 +24,8 @@ const Register = () => {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
       setMessage(res.data.msg);
       setMessageType('success');
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Registration failed');
+      setMessage(err.response?.data?.msg || 'Registration failed');
       setMessageType('error');
     }
   };

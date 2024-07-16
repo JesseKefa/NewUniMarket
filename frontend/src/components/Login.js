@@ -27,7 +27,7 @@ const Login = () => {
         navigate('/welcome');
       }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Login failed');
+      setMessage(err.response?.data?.msg || 'Login failed');
       setMessageType('error');
     }
   };
