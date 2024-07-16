@@ -22,10 +22,13 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-      setMessage(res.data.message);
+      setMessage(res.data.msg);
       setMessageType('success');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      setMessage(err.response.data.message);
+      setMessage(err.response?.data?.message || 'Registration failed');
       setMessageType('error');
     }
   };

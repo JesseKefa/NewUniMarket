@@ -1,5 +1,3 @@
-// frontend/src/components/Login.js
-
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -29,7 +27,7 @@ const Login = () => {
         navigate('/welcome');
       }, 2000); // Delay the navigation to show the success message
     } catch (err) {
-      setMessage(err.response.data.message);
+      setMessage(err.response?.data?.message || 'Login failed');
       setMessageType('error');
     }
   };
