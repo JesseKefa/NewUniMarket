@@ -20,12 +20,13 @@ const upload = multer({
 const addProduct = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
+      console.error('Error uploading files:', err);
       return res.status(400).json({ msg: 'Error uploading files' });
     }
 
-    const { category, title, description, price, quantity } = req.body;
+    const { category, type, title, description, price, quantity } = req.body;
 
-    if (!category || !title || !description || !price || !quantity) {
+    if (!category || !type || !title || !description || !price || !quantity) {
       return res.status(400).json({ msg: 'All fields are required' });
     }
 
@@ -33,6 +34,7 @@ const addProduct = (req, res) => {
 
     const newProduct = new Product({
       category,
+      type,
       title,
       description,
       price,
@@ -45,12 +47,73 @@ const addProduct = (req, res) => {
       const product = await newProduct.save();
       res.json(product);
     } catch (error) {
-      console.error(error.message);
+      console.error('Server error:', error.message);
       res.status(500).send('Server error');
     }
   });
 };
 
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+const getProductsByIds = async (req, res) => {
+  try {
+    const products = await Product.find({ '_id': { $in: req.body.ids } });
+    res.json(products);
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ msg: 'Product not found' });
+    }
+    res.json(product);
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+
+const getFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('favorites');
+    res.json(user.favorites);
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+const getCart = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('cart');
+    res.json(user.cart);
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).send('Server error');
+  }
+};
+
 module.exports = {
   addProduct,
+  getProducts,
+  getProductsByIds,
+  getProductById,
+  getFavorites,
+  getCart,
 };
+
+

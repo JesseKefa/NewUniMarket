@@ -2,31 +2,31 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './UserProducts.css';
 
-const ShoppingCart = () => {
-  const [cart, setCart] = useState([]);
+const Favorites = () => {
+  const [favorites, setFavorites] = useState([]);
   
   useEffect(() => {
-    const fetchCart = async () => {
+    const fetchFavorites = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.post('http://localhost:5000/api/products/cart', {}, {
+        const res = await axios.post('http://localhost:5000/api/products/favorites', {}, {
           headers: {
             'x-auth-token': token,
           },
         });
-        setCart(res.data);
+        setFavorites(res.data);
       } catch (err) {
-        console.error('Error fetching cart products', err);
+        console.error('Error fetching favorite products', err);
       }
     };
-    fetchCart();
+    fetchFavorites();
   }, []);
 
   return (
     <div className="user-products">
-      <h2>Shopping Cart</h2>
+      <h2>Favorites</h2>
       <div className="product-grid">
-        {cart.map((product) => (
+        {favorites.map((product) => (
           <div key={product._id} className="product-card">
             <img src={`http://localhost:5000/uploads/${product.images[0]}`} alt={product.title} className="product-image" />
             <h3>{product.title}</h3>
@@ -38,4 +38,4 @@ const ShoppingCart = () => {
   );
 };
 
-export default ShoppingCart;
+export default Favorites;

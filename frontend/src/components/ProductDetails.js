@@ -30,7 +30,9 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = () => {
-    // Add product to cart logic here
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
     navigate('/cart');
   };
 
@@ -41,7 +43,7 @@ const ProductDetails = () => {
         <div className="product-images">
           {product.images && product.images.length > 0 ? (
             product.images.map((image, index) => (
-              <img key={index} src={image} alt={product.title} />
+              <img key={index} src={`http://localhost:5000/uploads/${image}`} alt={product.title} />
             ))
           ) : (
             <div className="product-image-placeholder">No Image Available</div>

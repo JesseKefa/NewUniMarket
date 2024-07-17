@@ -20,14 +20,22 @@ const UserProducts = () => {
   }, []);
 
   const handleFavorite = (productId) => {
-    // Implement the logic to add the product to favorites
-    console.log(`Product ${productId} added to favorites`);
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (!favorites.includes(productId)) {
+      favorites.push(productId);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      console.log(`Product ${productId} added to favorites`);
+    }
   };
 
   const handleAddToCart = (productId) => {
-    // Implement the logic to add the product to the shopping cart
-    console.log(`Product ${productId} added to cart`);
-    navigate('/cart');
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (!cart.includes(productId)) {
+      cart.push(productId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      console.log(`Product ${productId} added to cart`);
+      navigate('/cart');
+    }
   };
 
   return (
@@ -38,7 +46,7 @@ const UserProducts = () => {
           <div key={product._id} className="product-card">
             <Link to={`/products/${product._id}`}>
               {product.images && product.images.length > 0 ? (
-                <img src={product.images[0]} alt={product.title} className="product-image" />
+                <img src={`http://localhost:5000/uploads/${product.images[0]}`} alt={product.title} className="product-image" />
               ) : (
                 <div className="product-image-placeholder">No Image Available</div>
               )}

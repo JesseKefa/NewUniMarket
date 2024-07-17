@@ -5,6 +5,7 @@ import './ProductManager.css';
 const ProductManager = () => {
   const [formData, setFormData] = useState({
     category: '',
+    type: '',
     title: '',
     description: '',
     price: '',
@@ -24,6 +25,11 @@ const ProductManager = () => {
     'Toys & Hobbies',
     'Health & Beauty',
     // Add more categories as needed
+  ];
+
+  const types = [
+    'Physical',
+    'Digital',
   ];
 
   const onChange = (e) => {
@@ -50,16 +56,14 @@ const ProductManager = () => {
     e.preventDefault();
     const form = new FormData();
     form.append('category', formData.category);
+    form.append('type', formData.type);
     form.append('title', formData.title);
     form.append('description', formData.description);
     form.append('price', formData.price);
     form.append('quantity', formData.quantity);
-    selectedImages.forEach((image, index) => {
-      form.append('images', image);
+    selectedImages.forEach((image) => {
+      form.append('productImages', image);
     });
-
-    // Log FormData entries for debugging
-    console.log('FormData entries:', Array.from(form.entries()));
 
     try {
       const token = localStorage.getItem('token');
@@ -74,6 +78,7 @@ const ProductManager = () => {
       // Reset form after successful submission
       setFormData({
         category: '',
+        type: '',
         title: '',
         description: '',
         price: '',
@@ -82,7 +87,7 @@ const ProductManager = () => {
       });
       setSelectedImages([]);
     } catch (err) {
-      console.error('Error adding product', err.response ? err.response.data : err);  // Log the error to the console
+      console.error('Error adding product', err.response ? err.response.data : err);
       setMessage('Error adding product');
       setMessageType('error');
     }
@@ -99,6 +104,17 @@ const ProductManager = () => {
             {categories.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label>Type</label>
+          <select name="type" value={formData.type} onChange={onChange} required>
+            <option value="">Select Type</option>
+            {types.map((type) => (
+              <option key={type} value={type}>
+                {type}
               </option>
             ))}
           </select>

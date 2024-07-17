@@ -118,6 +118,7 @@ const AccountSettings = () => {
       setMessage('Profile updated successfully');
       setMessageType('success');
       setEditMode(false);
+      
       // Update profile picture in Navbar
       document.getElementById('navbarProfileImage').src = `http://localhost:5000/uploads/${res.data.profileImage}`;
       localStorage.setItem('profileImage', res.data.profileImage);
