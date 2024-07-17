@@ -1,58 +1,33 @@
-import React, { useState } from 'react';
-import './ShoppingCart.css';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './UserProducts.css';
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cartItems')) || []);
+  const [cart, setCart] = useState([]);
 
-  const updateQuantity = (index, quantity) => {
-    const newCartItems = [...cartItems];
-    newCartItems[index].quantity = quantity;
-    setCartItems(newCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-  };
-
-  const removeItem = (index) => {
-    const newCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(newCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-  };
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(storedCart);
+  }, []);
 
   return (
-    <div className="shopping-cart-container">
-      <h1>Shopping Cart</h1>
-      {cartItems.length > 0 ? (
-        <div className="cart-items">
-          {cartItems.map((item, index) => (
-            <div key={index} className="cart-item">
-              <img src={item.image} alt={item.name} />
-              <div className="cart-item-details">
-                <div className="cart-item-title">{item.name}</div>
-                <div className="cart-item-description">{item.description}</div>
-                <div className="cart-item-price">${item.price}</div>
-                <div className="cart-item-quantity">
-                  <label htmlFor={`quantity-${index}`}>Quantity:</label>
-                  <input
-                    type="number"
-                    id={`quantity-${index}`}
-                    name={`quantity-${index}`}
-                    value={item.quantity}
-                    min="1"
-                    onChange={(e) => updateQuantity(index, e.target.value)}
-                  />
-                </div>
-                <button className="remove-button" onClick={() => removeItem(index)}>
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
-          <button className="checkout-button" onClick={() => window.location.href='/checkout'}>
-            Proceed to Checkout
-          </button>
-        </div>
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
+    <div className="user-products">
+      <h2>Shopping Cart</h2>
+      <div className="product-grid">
+        {cart.map((product) => (
+          <div key={product._id} className="product-card">
+            <Link to={`/product/${product._id}`}>
+              {product.images && product.images.length > 0 ? (
+                <img src={product.images[0]} alt={product.title} className="product-image" />
+              ) : (
+                <div className="product-image-placeholder">No Image Available</div>
+              )}
+            </Link>
+            <h3><Link to={`/product/${product._id}`}>{product.title}</Link></h3>
+            <p>KES {product.price}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
