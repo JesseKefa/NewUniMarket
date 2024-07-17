@@ -29,7 +29,7 @@ const orderRoutes = require('./routes/orderRoutes');
 // Define Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/products', productRoutes); // Ensure this route is correct
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);

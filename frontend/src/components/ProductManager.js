@@ -55,15 +55,15 @@ const ProductManager = () => {
     form.append('price', formData.price);
     form.append('quantity', formData.quantity);
     selectedImages.forEach((image, index) => {
-      form.append('productImages', image);
+      form.append('images', image);
     });
-  
+
     // Log FormData entries for debugging
     console.log('FormData entries:', Array.from(form.entries()));
-  
+
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:5000/api/products', form, {
+      await axios.post('http://localhost:5000/api/products', form, {
         headers: {
           'x-auth-token': token,
           'Content-Type': 'multipart/form-data',
@@ -87,7 +87,6 @@ const ProductManager = () => {
       setMessageType('error');
     }
   };
-  
 
   return (
     <div className="product-manager">
