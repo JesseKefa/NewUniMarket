@@ -13,6 +13,7 @@ const app = express();
 // Connect Database
 connectDB();
 
+// Middleware
 app.use(express.json({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const adminAuthRoutes = require('./routes/adminAuthRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const cartRoutes = require('./routes/cartRoutes'); // Added cart routes
 
 // Define Routes
 app.use('/api/auth', authRoutes);
@@ -34,7 +36,9 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/auth', adminAuthRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/cart', cartRoutes); // Use cart routes
 
+// Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = config.get('port') || 5000;

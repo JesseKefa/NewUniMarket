@@ -15,8 +15,8 @@ const VerifyEmail = () => {
         setMessage(res.data.msg);
         setMessageType('success');
         setTimeout(() => {
-          navigate('/reset-password/' + token);
-        }, 2000); // Redirect to reset password page after 2 seconds
+          navigate('/login');
+        }, 2000); // Redirect to login page after 2 seconds
       } catch (err) {
         setMessage(err.response?.data?.msg || 'Email verification failed');
         setMessageType('error');

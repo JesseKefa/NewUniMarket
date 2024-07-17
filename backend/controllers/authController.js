@@ -1,7 +1,6 @@
- const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../utils/sendEmail');
-const crypto = require('crypto');
 const User = require('../models/User');
 
 // Register User
@@ -26,8 +25,8 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    const token = crypto.randomBytes(32).toString('hex');
-    user.verificationToken = token;
+    // Generate JWT for email verification
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     await user.save();
 
@@ -49,23 +48,24 @@ exports.register = async (req, res) => {
 // Verify Email
 exports.verifyEmail = async (req, res) => {
   try {
-    const user = await User.findOne({ verificationToken: req.params.token });
+    const { token } = req.params;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(400).json({ msg: 'Invalid token' });
     }
 
     user.verified = true;
-    user.verificationToken = undefined;
     await user.save();
 
-    res.redirect('/login'); // Redirect to login page
+    res.status(200).json({ msg: 'Email verified successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Server error' });
   }
 };
-
 
 // Login User
 exports.login = async (req, res) => {
@@ -91,12 +91,13 @@ exports.login = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        username: user.username,
       },
     };
 
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, username: user.username });
     });
   } catch (err) {
     console.error(err);
