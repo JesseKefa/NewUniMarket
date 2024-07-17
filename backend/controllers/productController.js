@@ -15,19 +15,17 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 }, // 1MB limit
-}).array('images', 10); // Allow up to 10 images
+}).array('productImages', 10); // Allow up to 10 images
 
 const addProduct = (req, res) => {
   upload(req, res, async (err) => {
     if (err) {
-      console.error('Multer error:', err);
-      return res.status(400).json({ msg: 'Error uploading files', error: err });
+      return res.status(400).json({ msg: 'Error uploading files' });
     }
 
     const { category, title, description, price, quantity } = req.body;
 
     if (!category || !title || !description || !price || !quantity) {
-      console.log('Missing fields:', { category, title, description, price, quantity });
       return res.status(400).json({ msg: 'All fields are required' });
     }
 
@@ -47,7 +45,7 @@ const addProduct = (req, res) => {
       const product = await newProduct.save();
       res.json(product);
     } catch (error) {
-      console.error('Error saving product:', error.message);
+      console.error(error.message);
       res.status(500).send('Server error');
     }
   });

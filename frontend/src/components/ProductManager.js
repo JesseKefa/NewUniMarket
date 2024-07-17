@@ -55,7 +55,7 @@ const ProductManager = () => {
     form.append('price', formData.price);
     form.append('quantity', formData.quantity);
     selectedImages.forEach((image, index) => {
-      form.append('images', image);
+      form.append('productImages', image);
     });
   
     // Log FormData entries for debugging
