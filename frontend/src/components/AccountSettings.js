@@ -46,7 +46,7 @@ const AccountSettings = () => {
           setAsDefault: false,
         };
         setFormData(profileData);
-        setProfileImagePreview(profileData.profileImage);
+        setProfileImagePreview(`http://localhost:5000/uploads/${profileData.profileImage}`);
       } catch (err) {
         console.error('Error fetching profile', err); // Log the error to the console
         setMessage('Error fetching profile');
@@ -77,16 +77,26 @@ const AccountSettings = () => {
 
   const onFileChange = (e) => {
     const file = e.target.files[0];
-    setProfileImage(file);
-    setProfileImagePreview(URL.createObjectURL(file));
+    if (file) {
+      setProfileImage(file);
+      setProfileImagePreview(URL.createObjectURL(file));
+    }
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Format the date of birth (dob) to yyyy-MM-dd
+    const formattedDob = formData.dob ? new Date(formData.dob).toISOString().split('T')[0] : '';
+
     const form = new FormData();
     for (const key in formData) {
       if (key !== 'address') {
-        form.append(key, formData[key]);
+        if (key === 'dob') {
+          form.append(key, formattedDob);
+        } else {
+          form.append(key, formData[key]);
+        }
       } else {
         form.append('address', JSON.stringify(formData[key]));
       }
@@ -104,12 +114,12 @@ const AccountSettings = () => {
         },
       });
       setFormData(res.data);
-      setProfileImagePreview(res.data.profileImage);
+      setProfileImagePreview(`http://localhost:5000/uploads/${res.data.profileImage}`);
       setMessage('Profile updated successfully');
       setMessageType('success');
       setEditMode(false);
       // Update profile picture in Navbar
-      document.getElementById('navbarProfileImage').src = res.data.profileImage;
+      document.getElementById('navbarProfileImage').src = `http://localhost:5000/uploads/${res.data.profileImage}`;
       localStorage.setItem('profileImage', res.data.profileImage);
 
       // Clear message after 3 seconds
@@ -144,7 +154,7 @@ const AccountSettings = () => {
           </div>
           <div>
             <label>Date of Birth</label>
-            <input type="date" name="dob" value={formData.dob} onChange={onChange} />
+            <input type="date" name="dob" value={formData.dob.split('T')[0]} onChange={onChange} />
           </div>
           <div>
             <label>Gender</label>
@@ -210,19 +220,19 @@ const AccountSettings = () => {
             <img src={profileImagePreview || '/default-profile.png'} alt="Profile" />
           </div>
           <div className="profile-info">
-            <p>Email: {formData.email}</p>
-            <p>Username: {formData.username}</p>
-            <p>Date of Birth: {new Date(formData.dob).toDateString()}</p>
-            <p>Gender: {formData.gender}</p>
-            <p>About: {formData.about}</p>
+            <p><strong>Email:</strong> {formData.email}</p>
+            <p><strong>Username:</strong> {formData.username}</p>
+            <p><strong>Date of Birth:</strong> {new Date(formData.dob).toDateString()}</p>
+            <p><strong>Gender:</strong> {formData.gender}</p>
+            <p><strong>About:</strong> {formData.about}</p>
             <h3>Address</h3>
-            <p>Country: {formData.address.country}</p>
-            <p>Full Name: {formData.address.fullName}</p>
-            <p>Street Address: {formData.address.streetAddress}</p>
-            <p>Apt / Suite / Other: {formData.address.aptSuite}</p>
-            <p>City: {formData.address.city}</p>
-            <p>Postal Code: {formData.address.postalCode}</p>
-            <p>Set as Default: {formData.address.setAsDefault ? 'Yes' : 'No'}</p>
+            <p><strong>Country:</strong> {formData.address.country}</p>
+            <p><strong>Full Name:</strong> {formData.address.fullName}</p>
+            <p><strong>Street Address:</strong> {formData.address.streetAddress}</p>
+            <p><strong>Apt / Suite / Other:</strong> {formData.address.aptSuite}</p>
+            <p><strong>City:</strong> {formData.address.city}</p>
+            <p><strong>Postal Code:</strong> {formData.address.postalCode}</p>
+            <p><strong>Set as Default:</strong> {formData.address.setAsDefault ? 'Yes' : 'No'}</p>
           </div>
           <button onClick={() => setEditMode(true)}>Edit Profile</button>
         </div>
