@@ -35,10 +35,20 @@ const AccountSettings = () => {
             'x-auth-token': token,
           },
         });
-        setFormData(res.data);
-        setProfileImagePreview(res.data.profileImage);
+        const profileData = res.data;
+        profileData.address = profileData.address || {
+          country: '',
+          fullName: '',
+          streetAddress: '',
+          aptSuite: '',
+          city: '',
+          postalCode: '',
+          setAsDefault: false,
+        };
+        setFormData(profileData);
+        setProfileImagePreview(profileData.profileImage);
       } catch (err) {
-        console.error('Error fetching profile', err);  // Log the error to the console
+        console.error('Error fetching profile', err); // Log the error to the console
         setMessage('Error fetching profile');
         setMessageType('error');
       }
@@ -108,7 +118,7 @@ const AccountSettings = () => {
         setMessageType('');
       }, 3000);
     } catch (err) {
-      console.error('Error updating profile', err);  // Log the error to the console
+      console.error('Error updating profile', err); // Log the error to the console
       setMessage('Error updating profile');
       setMessageType('error');
     }
@@ -200,19 +210,19 @@ const AccountSettings = () => {
             <img src={profileImagePreview || '/default-profile.png'} alt="Profile" />
           </div>
           <div className="profile-info">
-            <p><strong>Email:</strong> {formData.email}</p>
-            <p><strong>Username:</strong> {formData.username}</p>
-            <p><strong>Date of Birth:</strong> {new Date(formData.dob).toDateString()}</p>
-            <p><strong>Gender:</strong> {formData.gender}</p>
-            <p><strong>About:</strong> {formData.about}</p>
+            <p>Email: {formData.email}</p>
+            <p>Username: {formData.username}</p>
+            <p>Date of Birth: {new Date(formData.dob).toDateString()}</p>
+            <p>Gender: {formData.gender}</p>
+            <p>About: {formData.about}</p>
             <h3>Address</h3>
-            <p><strong>Country:</strong> {formData.address.country}</p>
-            <p><strong>Full Name:</strong> {formData.address.fullName}</p>
-            <p><strong>Street Address:</strong> {formData.address.streetAddress}</p>
-            <p><strong>Apt / Suite / Other:</strong> {formData.address.aptSuite}</p>
-            <p><strong>City:</strong> {formData.address.city}</p>
-            <p><strong>Postal Code:</strong> {formData.address.postalCode}</p>
-            <p><strong>Set as Default:</strong> {formData.address.setAsDefault ? 'Yes' : 'No'}</p>
+            <p>Country: {formData.address.country}</p>
+            <p>Full Name: {formData.address.fullName}</p>
+            <p>Street Address: {formData.address.streetAddress}</p>
+            <p>Apt / Suite / Other: {formData.address.aptSuite}</p>
+            <p>City: {formData.address.city}</p>
+            <p>Postal Code: {formData.address.postalCode}</p>
+            <p>Set as Default: {formData.address.setAsDefault ? 'Yes' : 'No'}</p>
           </div>
           <button onClick={() => setEditMode(true)}>Edit Profile</button>
         </div>

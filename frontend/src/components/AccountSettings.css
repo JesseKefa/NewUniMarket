@@ -12,37 +12,55 @@
   margin-bottom: 20px;
 }
 
-.profile-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.profile-picture img,
+.profile-preview {
+  max-width: 150px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
 }
 
-.profile-picture img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+.profile-display,
+.profile-info {
+  text-align: center;
+}
+
+.profile-display .profile-info p {
+  margin: 10px 0;
+}
+
+.profile-display .profile-picture {
   margin-bottom: 20px;
 }
 
-.profile-info {
+form div {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+textarea,
+input[type="file"],
+select {
   width: 100%;
-  text-align: left;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.profile-info p {
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-.profile-info h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
+input[type="radio"] {
+  margin-right: 5px;
 }
 
 button {
-  margin-top: 20px;
-  padding: 10px 20px;
+  width: 100%;
+  padding: 10px;
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -57,38 +75,9 @@ button:hover {
 .success-message {
   color: green;
   text-align: center;
-  margin-top: 20px;
 }
 
 .error-message {
   color: red;
   text-align: center;
-  margin-top: 20px;
-}
-
-form div {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="date"],
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.profile-preview {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-top: 10px;
 }
