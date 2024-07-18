@@ -35,8 +35,8 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     const userId = localStorage.getItem('userId'); // Ensure userId is stored in localStorage on login
-    const token = localStorage.getItem('token');
     try {
+      const token = localStorage.getItem('token');
       const res = await axios.post(`http://localhost:5000/api/cart/${userId}`, {
         productId: product._id,
         quantity: 1,

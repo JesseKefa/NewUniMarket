@@ -1,7 +1,7 @@
 const Cart = require('../models/Cart');
 
 exports.addToCart = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
   const { productId, quantity } = req.body;
 
   try {
@@ -32,7 +32,7 @@ exports.addToCart = async (req, res) => {
 };
 
 exports.getCart = async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
 
   try {
     const cart = await Cart.findOne({ user: userId }).populate('items.productId');
@@ -40,6 +40,27 @@ exports.getCart = async (req, res) => {
       return res.status(404).json({ msg: 'Cart not found' });
     }
     res.status(200).json(cart);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+exports.removeFromCart = async (req, res) => {
+  const userId = req.user.id;
+  const { productId } = req.params;
+
+  try {
+    let cart = await Cart.findOne({ user: userId });
+
+    if (cart) {
+      cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+
+      await cart.save();
+      return res.status(200).json(cart);
+    } else {
+      return res.status(404).json({ msg: 'Cart not found' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Server error' });

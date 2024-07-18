@@ -29,6 +29,39 @@ const ShoppingCart = () => {
     fetchCart();
   }, [userId]);
 
+  const handleRemoveItem = async (productId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://localhost:5000/api/cart/${userId}/${productId}`, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      setCart(cart.filter(item => item.productId._id !== productId));
+    } catch (err) {
+      console.error('Error removing item from cart', err);
+    }
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.post(`http://localhost:5000/api/orders`, {
+        items: cart,
+        totalAmount: cart.reduce((total, item) => total + item.productId.price * item.quantity, 0),
+        paymentMethod: 'M-Pesa' // or 'Credit Card'
+      }, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+      console.log('Order created:', res.data);
+      // Handle successful checkout (e.g., redirect to order confirmation page)
+    } catch (err) {
+      console.error('Error creating order', err);
+    }
+  };
+
   return (
     <div className="user-products">
       <h2>Shopping Cart</h2>
@@ -45,12 +78,14 @@ const ShoppingCart = () => {
               </Link>
               <h3><Link to={`/products/${item.productId._id}`}>{item.productId.title}</Link></h3>
               <p>Quantity: {item.quantity}</p>
+              <button onClick={() => handleRemoveItem(item.productId._id)}>Remove</button>
             </div>
           ))
         ) : (
           <p>Error fetching cart products</p>
         )}
       </div>
+      <button onClick={handleCheckout}>Proceed to Checkout</button>
     </div>
   );
 };

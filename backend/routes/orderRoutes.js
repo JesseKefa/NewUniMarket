@@ -6,12 +6,14 @@ const router = express.Router();
 
 // Create an order
 router.post('/', authMiddleware, async (req, res) => {
-  const { products, total } = req.body;
+  const { items, totalAmount, paymentMethod } = req.body;
   try {
     const newOrder = new Order({
       user: req.user.id,
-      products,
-      total
+      items,
+      totalAmount,
+      paymentMethod,
+      status: 'Pending'
     });
     const order = await newOrder.save();
     res.json(order);
@@ -24,7 +26,7 @@ router.post('/', authMiddleware, async (req, res) => {
 // Get user orders
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user.id }).populate('products.product', ['title', 'price']);
+    const orders = await Order.find({ user: req.user.id }).populate('items.productId', ['title', 'price']);
     res.json(orders);
   } catch (err) {
     console.error(err.message);
