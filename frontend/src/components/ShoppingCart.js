@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './UserProducts.css';
+import './ShoppingCart.css';
 
 const ShoppingCart = () => {
   const [cart, setCart] = useState(null);
@@ -30,7 +30,7 @@ const ShoppingCart = () => {
   }, [userId]);
 
   return (
-    <div className="user-products">
+    <div className="shopping-cart">
       <h2>Shopping Cart</h2>
       <div className="product-grid">
         {cart ? (
