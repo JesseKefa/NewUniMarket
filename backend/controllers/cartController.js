@@ -1,24 +1,25 @@
 const Cart = require('../models/Cart');
 
 exports.addToCart = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { userId } = req.params;
+  const { productId, quantity } = req.body;
 
   try {
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ user: userId });
 
     if (cart) {
       const itemIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
       if (itemIndex > -1) {
         let item = cart.items[itemIndex];
-        item.quantity += 1;
+        item.quantity += quantity;
         cart.items[itemIndex] = item;
       } else {
-        cart.items.push({ productId, quantity: 1 });
+        cart.items.push({ productId, quantity });
       }
     } else {
       cart = new Cart({
-        userId,
-        items: [{ productId, quantity: 1 }],
+        user: userId,
+        items: [{ productId, quantity }],
       });
     }
 
@@ -34,7 +35,7 @@ exports.getCart = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ userId }).populate('items.productId');
+    const cart = await Cart.findOne({ user: userId }).populate('items.productId');
     if (!cart) {
       return res.status(404).json({ msg: 'Cart not found' });
     }

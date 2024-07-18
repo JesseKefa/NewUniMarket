@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Messages.css';
+import { useParams } from 'react-router-dom';
 
 const Messages = () => {
+  const { userId } = useParams();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [receiver, setReceiver] = useState('');
+  const [receiver, setReceiver] = useState(userId || '');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 

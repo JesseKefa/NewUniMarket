@@ -1,19 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Cart = require('../models/Cart'); // Assuming you have a Cart model
+const authMiddleware = require('../middleware/authMiddleware');
+const cartController = require('../controllers/cartController');
 
-// Get cart by user ID
-router.get('/:userId', async (req, res) => {
-  try {
-    const cart = await Cart.findOne({ user: req.params.userId });
-    if (!cart) {
-      return res.status(404).json({ msg: 'Cart not found' });
-    }
-    res.json(cart);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+// Add product to cart
+router.post('/:userId', authMiddleware, cartController.addToCart);
+
+// Get cart items
+router.get('/:userId', authMiddleware, cartController.getCart);
 
 module.exports = router;

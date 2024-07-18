@@ -23,6 +23,7 @@ const Login = () => {
       setMessageType('success');
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('username', res.data.username); // Save username to display in the welcome page
+      localStorage.setItem('userId', res.data.userId); // Save userId to use in fetching the cart
       setTimeout(() => {
         navigate('/welcome');
       }, 2000); // Delay the navigation to show the success message

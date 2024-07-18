@@ -55,17 +55,7 @@ const addProduct = (req, res) => {
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    console.error('Server error:', err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-const getProductsByIds = async (req, res) => {
-  try {
-    const products = await Product.find({ '_id': { $in: req.body.ids } });
+    const products = await Product.find().populate('user', 'username email');
     res.json(products);
   } catch (err) {
     console.error('Server error:', err.message);
@@ -75,7 +65,7 @@ const getProductsByIds = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('user', 'username email');
     if (!product) {
       return res.status(404).json({ msg: 'Product not found' });
     }
@@ -86,34 +76,8 @@ const getProductById = async (req, res) => {
   }
 };
 
-
-const getFavorites = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).populate('favorites');
-    res.json(user.favorites);
-  } catch (err) {
-    console.error('Server error:', err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-const getCart = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).populate('cart');
-    res.json(user.cart);
-  } catch (err) {
-    console.error('Server error:', err.message);
-    res.status(500).send('Server error');
-  }
-};
-
 module.exports = {
   addProduct,
   getProducts,
-  getProductsByIds,
   getProductById,
-  getFavorites,
-  getCart,
 };
-
-

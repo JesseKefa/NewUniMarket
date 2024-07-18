@@ -33,11 +33,18 @@ const ProductDetails = () => {
     return <Typography variant="h6" color="error">{error}</Typography>;
   }
 
-  const handleAddToCart = () => {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.push(product);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    navigate('/cart');
+  const handleAddToCart = async () => {
+    const userId = localStorage.getItem('userId'); // Ensure userId is stored in localStorage on login
+    try {
+      const res = await axios.post(`http://localhost:5000/api/cart/${userId}`, {
+        productId: product._id,
+        quantity: 1,
+      });
+      console.log('Product added to cart:', res.data);
+      navigate('/cart');
+    } catch (err) {
+      console.error('Error adding to cart', err);
+    }
   };
 
   return (
@@ -61,6 +68,12 @@ const ProductDetails = () => {
           <Typography variant="body1"><strong>Price:</strong> KES {product.price}</Typography>
           <Typography variant="body1"><strong>Quantity:</strong> {product.quantity}</Typography>
           <Button variant="contained" color="primary" onClick={handleAddToCart}>Add to Cart</Button>
+          <div>
+            <Typography variant="h6">Seller Information</Typography>
+            <Typography variant="body1"><strong>Username:</strong> {product.user.username}</Typography>
+            <Typography variant="body1"><strong>Email:</strong> {product.user.email}</Typography>
+            <Button variant="outlined" color="primary" onClick={() => navigate(`/messages/${product.user._id}`)}>Message Seller</Button>
+          </div>
         </Grid>
       </Grid>
     </Container>
