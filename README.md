@@ -1,6 +1,6 @@
 # UniMarket
 
-UniMarket is an online marketplace tailored for university students, allowing them to buy, sell, and exchange goods within the campus community. The platform offers user registration, product management, and integrated payment options using M-Pesa or credit card.
+UniMarket is an online marketplace tailored for university students, allowing them to buy, sell, and exchange goods within the campus community. The platform offers user registration, product management, and integrated payment options using M-Pesa.
 
 ## Table of Contents
 
