@@ -19,7 +19,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
 - User Profile Management
 - Product Listing and Management
 - Shopping Cart and Checkout
-- Secure Payments with M-Pesa and credit card
+- Secure Payments with M-Pesa
 - Admin Dashboard for monitoring
 - Messaging system for users to communicate with sellers
 
@@ -76,7 +76,7 @@ UniMarket is an online marketplace tailored for university students, allowing th
 3. Verify your email and log in.
 4. Add products to your store.
 5. Browse and add products to the shopping cart.
-6. Checkout using M-Pesa or credit card.
+6. Checkout using M-Pesa or cash upon delivery
 7. Admin can log in to the admin dashboard to monitor the platform.
 
 ## API Endpoints
@@ -172,5 +172,3 @@ UniMarket/
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-```
-
