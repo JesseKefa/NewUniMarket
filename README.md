@@ -21,18 +21,16 @@ UniMarket is an online marketplace tailored for university students, allowing th
 - Shopping Cart and Checkout
 - Secure Payments with M-Pesa and credit card
 - Admin Dashboard for monitoring
-
-
+- Messaging system for users to communicate with sellers
 
 ## Technologies Used
-
 
 - **Frontend:** [React](https://reactjs.org/), [HTML](https://html.com), CSS
 - **Backend:** [Node.js](https://nodejs.org/), [Express.js](https://expressjs.com/)
 - **Database:** [MongoDB](https://www.mongodb.com/)
 - **Authentication:** [JWT (JSON Web Tokens)](https://jwt.io/)
 - **Payment Integration:** M-Pesa
-- **Deployment:** 
+- **Deployment:** 
 
 ## Installation
 
@@ -97,6 +95,11 @@ UniMarket is an online marketplace tailored for university students, allowing th
 ### Product Routes
 - `GET /api/products` - Get all products
 - `POST /api/products` - Create a new product
+- `GET /api/products/:id` - Get product by ID with user information
+
+### Cart Routes
+- `POST /api/cart/:userId` - Add product to cart
+- `GET /api/cart/:userId` - Get cart items
 
 ### Payment Routes
 - `POST /api/payments/mpesa` - Process M-Pesa payment
@@ -104,6 +107,10 @@ UniMarket is an online marketplace tailored for university students, allowing th
 ### Admin Routes
 - `GET /api/admin/users` - Get all users
 - `GET /api/admin/products` - Get all products
+
+### Message Routes
+- `GET /api/messages` - Get all messages for the user
+- `POST /api/messages/send` - Send a message to another user
 
 ## Project Structure
 
@@ -116,16 +123,22 @@ UniMarket/
 │   ├── controllers/              # Controllers to handle business logic
 │   │   ├── authController.js     # Handles authentication logic
 │   │   ├── productController.js  # Handles product-related logic
+│   │   ├── cartController.js     # Handles cart-related logic
+│   │   ├── messageController.js  # Handles messaging logic
 │   │   └── ...                   # Other controllers as needed
 │   ├── middleware/               # Middleware for handling requests
 │   │   └── authMiddleware.js     # Middleware for authentication
 │   ├── models/                   # Database models
 │   │   ├── User.js               # User model schema
 │   │   ├── Product.js            # Product model schema
-│   │   └── Order.js              # Order model schema
+│   │   ├── Cart.js               # Cart model schema
+│   │   └── Message.js            # Message model schema
 │   ├── routes/                   # Route handlers
 │   │   ├── auth.js               # Authentication routes
 │   │   ├── userRoutes.js         # User-related routes
+│   │   ├── productRoutes.js      # Product-related routes
+│   │   ├── cartRoutes.js         # Cart-related routes
+│   │   ├── messageRoutes.js      # Message-related routes
 │   │   └── ...                   # Other routes as needed
 │   ├── uploads/                  # Directory for uploaded files
 │   ├── .env                      # Environment variables
@@ -139,6 +152,10 @@ UniMarket/
 │   │   ├── components/           # React components
 │   │   │   ├── AccountSettings.js# Component for account settings
 │   │   │   ├── Login.js          # Component for login
+│   │   │   ├── ProductDetails.js # Component for product details
+│   │   │   ├── Messages.js       # Component for messaging
+│   │   │   ├── ShoppingCart.js   # Component for shopping cart
+│   │   │   ├── Checkout.js       # Component for checkout process
 │   │   │   └── ...               # Other components as needed
 │   │   ├── App.js                # Main App component
 │   │   ├── index.js              # Entry point for the React application
@@ -150,39 +167,10 @@ UniMarket/
 ├── .gitignore                    # Specifies files to be ignored by Git
 ├── README.md                     # Project documentation
 └── ...                           # Other files and directories as needed
-
 ```
 
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
