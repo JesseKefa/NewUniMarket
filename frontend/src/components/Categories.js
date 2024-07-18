@@ -8,7 +8,12 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('/api/admin/categories');
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get('http://localhost:5000/api/admin/categories', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setCategories(response.data);
       } catch (err) {
         console.error('Error fetching categories', err);
@@ -27,8 +32,8 @@ const Categories = () => {
       <h2>Manage Categories</h2>
       <ul>
         {categories.map(category => (
-          <li key={category}>
-            {category}
+          <li key={category._id}>
+            {category.name}
           </li>
         ))}
       </ul>

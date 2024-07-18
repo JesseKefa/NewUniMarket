@@ -8,7 +8,12 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/api/admin/orders');
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get('http://localhost:5000/api/admin/orders', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setOrders(response.data);
       } catch (err) {
         console.error('Error fetching orders', err);
@@ -28,7 +33,7 @@ const Orders = () => {
       <ul>
         {orders.map(order => (
           <li key={order._id}>
-            {order._id} - {order.total} - {order.user.email}
+            {order._id} - ${order.totalAmount} - {order.user.email}
           </li>
         ))}
       </ul>

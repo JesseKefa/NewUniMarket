@@ -24,7 +24,7 @@ import UserProducts from './components/UserProducts';
 import Orders from './components/Orders';
 import Categories from './components/Categories';
 import Messages from './components/Messages';
-import ProductDetails from './components/ProductDetails'; 
+import ProductDetails from './components/ProductDetails';
 import Favorites from './components/Favorites';
 
 import './styles.css';
@@ -43,7 +43,8 @@ function App() {
   return (
     <Router>
       {!isAdminRoute && <Navbar />}
-      <div className="container">
+      <div className={`container ${isAdminRoute ? 'admin-container' : ''}`}>
+        {isAdminRoute && <Sidebar />}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<Register />} />
@@ -52,7 +53,7 @@ function App() {
           <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/products" element={<UserProducts />} />
-          <Route path="/products/:productId" element={<ProductDetails />} /> 
+          <Route path="/products/:productId" element={<ProductDetails />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route element={<PrivateRoute />}>
             <Route path="/welcome" element={<Welcome />} />
@@ -61,7 +62,7 @@ function App() {
             <Route path="/shop-manager" element={<ProductManager />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/messages/:userId" element={<Messages />} /> 
+            <Route path="/messages/:userId" element={<Messages />} />
             <Route path="/admin" element={<AdminPage />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />

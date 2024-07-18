@@ -3,14 +3,18 @@ import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import './AdminDashboard.css';
 
-
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/admin/dashboard-data');
+        const token = localStorage.getItem('adminToken');
+        const res = await axios.get('http://localhost:5000/api/admin/dashboard-data', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setDashboardData(res.data);
       } catch (err) {
         console.error('Error fetching dashboard data', err);
@@ -29,7 +33,7 @@ const AdminDashboard = () => {
     datasets: [
       {
         label: 'Counts',
-        data: [dashboardData.usersCount, dashboardData.productsCount, dashboardData.ordersCount],
+        data: [dashboardData.users.length, dashboardData.products.length, dashboardData.orders.length],
         backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'],
       },
     ],
@@ -54,9 +58,9 @@ const AdminDashboard = () => {
             <tr key={order._id}>
               <td>{order.user.username}</td>
               <td>
-                {order.products.map(p => (
-                  <div key={p.product._id}>
-                    {p.product.name} (x{p.quantity})
+                {order.items.map(p => (
+                  <div key={p.productId._id}>
+                    {p.productId.title} (x{p.quantity})
                   </div>
                 ))}
               </td>
