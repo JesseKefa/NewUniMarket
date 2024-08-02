@@ -20,3 +20,13 @@ exports.createOrder = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
+exports.getUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user.id }).populate('items.productId', ['title', 'price']);
+    res.json(orders);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};

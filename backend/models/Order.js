@@ -1,29 +1,37 @@
 const mongoose = require('mongoose');
 
-const OrderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  products: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    quantity: { type: Number, required: true }
-  }],
-  total: { type: Number, required: true },
-  status: { type: String, enum: ['pending', 'processed', 'shipped', 'delivered', 'cancelled'], default: 'pending' },
-  paymentMethod: { type: String, required: true }, // e.g., 'Credit Card', 'PayPal', 'Cash on Delivery'
-  shippingAddress: {
-    country: String,
-    fullName: String,
-    streetAddress: String,
-    aptSuite: String,
-    city: String,
-    postalCode: String,
+const orderSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-});
+  items: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true
+      }
+    }
+  ],
+  totalAmount: {
+    type: Number,
+    required: true
+  },
+  paymentMethod: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Completed', 'Cancelled'],
+    default: 'Pending'
+  }
+}, { timestamps: true });
 
-OrderSchema.pre('save', function (next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
-module.exports = mongoose.model('Order', OrderSchema);
+module.exports = mongoose.model('Order', orderSchema);

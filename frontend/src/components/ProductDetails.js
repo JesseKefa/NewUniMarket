@@ -35,16 +35,20 @@ const ProductDetails = () => {
 
   const handleAddToCart = async () => {
     const userId = localStorage.getItem('userId'); // Ensure userId is stored in localStorage on login
+    const token = localStorage.getItem('token'); // Ensure token is stored in localStorage on login
     try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(`http://localhost:5000/api/cart/${userId}`, {
-        productId: product._id,
-        quantity: 1,
-      }, {
-        headers: {
-          'x-auth-token': token,
+      const res = await axios.post(
+        `http://localhost:5000/api/cart/${userId}`,
+        {
+          productId: product._id,
+          quantity: 1,
         },
-      });
+        {
+          headers: {
+            'x-auth-token': token,
+          },
+        }
+      );
       console.log('Product added to cart:', res.data);
       navigate('/cart');
     } catch (err) {
@@ -75,9 +79,15 @@ const ProductDetails = () => {
           <Button variant="contained" color="primary" onClick={handleAddToCart}>Add to Cart</Button>
           <div>
             <Typography variant="h6">Seller Information</Typography>
-            <Typography variant="body1"><strong>Username:</strong> {product.user.username}</Typography>
-            <Typography variant="body1"><strong>Email:</strong> {product.user.email}</Typography>
-            <Button variant="outlined" color="primary" onClick={() => navigate(`/messages/${product.user._id}`)}>Message Seller</Button>
+            {product.user ? (
+              <>
+                <Typography variant="body1"><strong>Username:</strong> {product.user.username}</Typography>
+                <Typography variant="body1"><strong>Email:</strong> {product.user.email}</Typography>
+                <Button variant="outlined" color="primary" onClick={() => navigate(`/messages/${product.user._id}`)}>Message Seller</Button>
+              </>
+            ) : (
+              <Typography>No seller information available</Typography>
+            )}
           </div>
         </Grid>
       </Grid>
